@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Trail-Making Demo</title>
+	  <style>
+      * { padding: 0; margin: 0; }
+      canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+<canvas id="myCanvas" width="300px" height="300px"></canvas>
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+  ctx.canvas.width  = window.innerWidth;
+  ctx.canvas.height = window.innerHeight;
+//ctx.beginPath();
+//ctx.rect(20, 40, 50, 50);
+//ctx.fillStyle = "#FF0000";
+//ctx.fill();
+//ctx.closePath();
+  ele_1b = new Image();
+  ele_1b.src = 'ele_1b.png';
+  ele_1b.onload = function(){
+    document.body.appendChild(ele_1b);
+    ctx.drawImage(ele_1b,0,0, 100,100);
+  }
+  ele_1b.onclick = function() {
+  	alert("clicked");
+  	console.log("Clicked");
+  //	ele_1b.src='ele_1p.png';
+  //	ctx.drawImage(ele_1b, 50, 50, 100,100);
+  }
+
+</script>
+
+</body>
+</html>

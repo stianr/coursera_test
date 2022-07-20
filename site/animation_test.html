@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+  position: relative;
+  text-align: center;
+  color: black;
+  animation-name: example;
+  animation-duration: 1s;
+
+}
+
+@keyframes example {
+ 0% {
+    transform: scale(0.25, 0.25);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+.centered {
+   font-family: 'Mouse Memoirs', sans-serif;
+     font-size: 36px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+</head>
+<body>
+
+<div>
+<div class="container" style="width:100%;">
+  <img src="feedback.png" alt="Feedback" >
+  <div class="centered">Well done!<br/>You did it in 7 seconds with 8 clicks!
+  </div>
+</div>
+</div>
+
+</body>
+</html> 

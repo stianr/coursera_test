@@ -3,51 +3,37 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
 	<title>Trail-Making Demo</title>
 	  <style>
       * { padding: 0; margin: 0; }
       .overlays {position: absolute;}
 
-      .zoom-in-out-box {
-  margin: 24px;
-  width: 50px;
-  height: 50px;
-  background: #f50057;
-  animation: zoom-in-zoom-out 1s ease infinite;
-}
-
-@keyframes zoom-in-zoom-out {
-  0% {
-    transform: scale(1, 1);
-  }
-  100% {
-    transform: scale(2, 2);
-  }
-}
-    </style>
+</style>
 </head>
 <body>
     <img id="background_png" src="jungle.png" width="500" />
+
 <script>
   var winit=window.innerWidth;
   var hinit=window.innerHeight;
   var nextclick="1a";
+  var hoffset=0;
+  var voffset=0;
   if(winit/2560 > hinit/1440) {
   background_png.height=window.innerHeight;
   background_png.width=(window.innerHeight/1440)*2560;
+
 
   } else {
   background_png.width=window.innerWidth;
   background_png.height=(window.innerWidth/2560)*1440;
   }
-
+  var hoffset=(window.innerWidth-background_png.width)/2;
+  background_png.setAttribute('class', 'overlays');
+  console.log(hoffset);
+  background_png.style.left=hoffset+"px";
   var wd=background_png.width;
-  myImage = new Image();
-  myImage = 'ele_1b.png';
-  var image = document.getElementById('background_png');
+
 
   
 
@@ -56,8 +42,8 @@
         i_1a.setAttribute('src', '1_a_ns.png');
         i_1a.setAttribute('class', 'overlays');
         i_1a.width=window.wd/15;
-        i_1a.style.left = 0.1*wd+ "px";
-        i_1a.style.top = 0.1*wd + "px";
+        i_1a.style.left = 0.1*wd+hoffset+ "px";
+        i_1a.style.top = 0.1*wd +voffset+ "px";
         document.body.appendChild(i_1a);
         i_1a.onclick=function() {
           checkUpdate("1a");
@@ -67,8 +53,8 @@
         i_1b.setAttribute('src', '1_b_ns.png');
         i_1b.setAttribute('class', 'overlays');
         i_1b.width=window.wd/15;
-        i_1b.style.left = 0.3*wd + "px";
-        i_1b.style.top = 0.2*wd + "px";
+        i_1b.style.left = 0.3*wd +hoffset+ "px";
+        i_1b.style.top = 0.2*wd +voffset+ "px";
         document.body.appendChild(i_1b);
         i_1b.onclick=function() {
           checkUpdate("1b");
@@ -78,8 +64,8 @@
         i_2a.setAttribute('src', '2_a_ns.png');
         i_2a.setAttribute('class', 'overlays');
         i_2a.width=window.wd/15;
-        i_2a.style.left = 0.5*wd+ "px";
-        i_2a.style.top = 0.18*wd + "px";
+        i_2a.style.left = 0.5*wd+hoffset+ "px";
+        i_2a.style.top = 0.18*wd +voffset+ "px";
         document.body.appendChild(i_2a);
         i_2a.onclick=function() {
           checkUpdate("2a");
@@ -89,8 +75,8 @@
         i_2b.setAttribute('src', '2_b_ns.png');
         i_2b.setAttribute('class', 'overlays');
         i_2b.width=window.wd/15;
-        i_2b.style.left = 0.8*wd+ "px";
-        i_2b.style.top = 0.05*wd + "px";
+        i_2b.style.left = 0.8*wd+ hoffset+"px";
+        i_2b.style.top = 0.05*wd + voffset+"px";
         document.body.appendChild(i_2b);
         i_2b.onclick=function() {
           checkUpdate("2b");
@@ -100,8 +86,8 @@
         i_3a.setAttribute('src', '3_a_ns.png');
         i_3a.setAttribute('class', 'overlays');
         i_3a.width=window.wd/15;
-        i_3a.style.left = 0.85*wd+ "px";
-        i_3a.style.top = 0.35*wd + "px";
+        i_3a.style.left = 0.85*wd+hoffset+ "px";
+        i_3a.style.top = 0.35*wd +voffset+ "px";
         document.body.appendChild(i_3a);
         i_3a.onclick=function() {
           checkUpdate("3a");
@@ -111,8 +97,8 @@
         i_3b.setAttribute('src', '3_b_ns.png');
         i_3b.setAttribute('class', 'overlays');
         i_3b.width=window.wd/15;
-        i_3b.style.left = 0.1*wd+ "px";
-        i_3b.style.top = 0.4*wd + "px";
+        i_3b.style.left = 0.1*wd+hoffset+ "px";
+        i_3b.style.top = 0.4*wd +voffset+ "px";
         document.body.appendChild(i_3b);
         i_3b.onclick=function() {
           checkUpdate("3b");
@@ -122,8 +108,8 @@
         i_4a.setAttribute('src', '4_a_ns.png');
         i_4a.setAttribute('class', 'overlays');
         i_4a.width=window.wd/15;
-        i_4a.style.left = 0.55*wd+ "px";
-        i_4a.style.top = 0.32*wd + "px";
+        i_4a.style.left = 0.55*wd+ hoffset+"px";
+        i_4a.style.top = 0.32*wd +voffset+ "px";
         document.body.appendChild(i_4a);
         i_4a.onclick=function() {
           checkUpdate("4a");
@@ -133,8 +119,8 @@
         i_4b.setAttribute('src', '4_b_ns.png');
         i_4b.setAttribute('class', 'overlays');
         i_4b.width=window.wd/15;
-        i_4b.style.left = 0.22*wd+ "px";
-        i_4b.style.top = 0.27*wd + "px";
+        i_4b.style.left = 0.22*wd+hoffset+ "px";
+        i_4b.style.top = 0.27*wd +voffset+ "px";
         document.body.appendChild(i_4b);
         i_4b.onclick=function() {
           checkUpdate("4b");
@@ -145,8 +131,8 @@
         l_1.setAttribute('src', 'line_1.png');
         l_1.setAttribute('class', 'overlays');
         l_1.width=window.wd/6.7;
-        l_1.style.left = 0.16*wd + "px";
-        l_1.style.top = 0.14*wd + "px";
+        l_1.style.left = 0.16*wd +hoffset+ "px";
+        l_1.style.top = 0.14*wd +voffset+ "px";
         document.body.appendChild(l_1);
         l_1.style.visibility="hidden";
 
@@ -155,8 +141,8 @@
         l_2.setAttribute('src', 'line_2.png');
         l_2.setAttribute('class', 'overlays');
         l_2.width=window.wd/7;
-        l_2.style.left = 0.36*wd + "px";
-        l_2.style.top = 0.22*wd + "px";
+        l_2.style.left = 0.36*wd +hoffset+ "px";
+        l_2.style.top = 0.22*wd +voffset+ "px";
         document.body.appendChild(l_2);
         l_2.style.visibility="hidden";
 
@@ -165,8 +151,8 @@
         l_3.setAttribute('src', 'line_3.png');
         l_3.setAttribute('class', 'overlays');
         l_3.width=window.wd/4.1;
-        l_3.style.left = 0.56*wd + "px";
-        l_3.style.top = 0.095*wd + "px";
+        l_3.style.left = 0.56*wd +hoffset+ "px";
+        l_3.style.top = 0.095*wd +voffset+ "px";
         document.body.appendChild(l_3);
         l_3.style.visibility="hidden";
 
@@ -174,8 +160,8 @@
         l_4.setAttribute('src', 'line_4.png');
         l_4.setAttribute('class', 'overlays');
         l_4.width=window.wd/27;
-        l_4.style.left = 0.837*wd + "px";
-        l_4.style.top = 0.115*wd + "px";
+        l_4.style.left = 0.837*wd +hoffset+ "px";
+        l_4.style.top = 0.115*wd +voffset+ "px";
         document.body.appendChild(l_4);
         l_4.style.visibility="hidden";
 
@@ -183,8 +169,8 @@
         l_5.setAttribute('src', 'line_5.png');
         l_5.setAttribute('class', 'overlays');
         l_5.width=window.wd/1.42;
-        l_5.style.left = 0.16*wd + "px";
-        l_5.style.top = 0.4*wd + "px";
+        l_5.style.left = 0.16*wd +hoffset+ "px";
+        l_5.style.top = 0.4*wd +voffset+ "px";
         document.body.appendChild(l_5);
         l_5.style.visibility="hidden";
 
@@ -192,8 +178,8 @@
         l_6.setAttribute('src', 'line_6.png');
         l_6.setAttribute('class', 'overlays');
         l_6.width=window.wd/2.5;
-        l_6.style.left = 0.152*wd + "px";
-        l_6.style.top = 0.335*wd + "px";
+        l_6.style.left = 0.152*wd +hoffset+ "px";
+        l_6.style.top = 0.335*wd +voffset+ "px";
         document.body.appendChild(l_6);
         l_6.style.visibility="hidden";
 
@@ -201,14 +187,16 @@
         l_7.setAttribute('src', 'line_7.png');
         l_7.setAttribute('class', 'overlays');
         l_7.width=window.wd/3.5;
-        l_7.style.left = 0.28*wd + "px";
-        l_7.style.top = 0.318*wd + "px";
+        l_7.style.left = 0.28*wd +hoffset+ "px";
+        l_7.style.top = 0.318*wd +voffset+ "px";
         document.body.appendChild(l_7);
         l_7.style.visibility="hidden";
 
 function checkUpdate(clicked){
     console.log(clicked);
 if(clicked=="1a"){
+ // document.getElementById('container').style.visibility="visible";
+ // document.getElementById('container').animationPlayState="running";
   if(nextclick=="1a"){
    i_1a.setAttribute('src', '1_a_s.png');
    nextclick="1b";
