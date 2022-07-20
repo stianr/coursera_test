@@ -16,20 +16,20 @@
    position: relative;
   text-align: center;
   color: black;
-  top: 200px;
+  top: 0;
   animation-name: example;
   animation-duration: 1s;
-  transform: scale(1, 1);
+  transform: scale(1);
   visibility: hidden;
   animation-play-state: paused;
 }
 
 @keyframes example {
  0% {
-    transform: scale(0.5, 0.5);
+    transform: scale(0.5);
   }
   100% {
-    transform: scale(1, 1);
+    transform: scale(1);
   }
 }
 
@@ -73,6 +73,8 @@
   }
   hoffset=(window.innerWidth-background_png.width)/2;
   voffset=(window.innerHeight-background_png.height)/2;
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
   background_png.setAttribute('class', 'overlays');
   console.log(hoffset);
   background_png.style.left=hoffset+"px";
