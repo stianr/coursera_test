@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+ <title>Space Demo</title>
+ <style>
+ * { padding: 0; margin: 0; }
+      .overlays {position: absolute;}
+
+    </style>
+</head>
+<body>
+  <img id="background_png" src="space.png" width="500" />
+<div id="container" style="width:100%;">
+</div>
+
+ <script>
+  var trials = '{"trials":[{"subtrials":"1","tasks":[{"l":"s1","m":"s1","r":"s2"}]},{"subtrials":"2","tasks":[{"l":"s3","m":"s4","r":"s3"},{"l":"s5","m":"s6","r":"s6"}]}]}';
+  const obj = JSON.parse(trials);
+  console.log("JSON"+obj.trials[0].tasks[0].l);
+  var winit=window.innerWidth;
+  var hinit=window.innerHeight;
+  var allow=1;
+  var hoffset=0;
+  var voffset=0;
+  var trialno=0;
+  var subtrialssofar=-1;
+  var resp1=0;
+  var resp2=0;
+  var resp3=0;
+  var totaltrials=2;
+  if(winit/2560 > hinit/1440) {
+  background_png.height=0.99*window.innerHeight;
+  background_png.width=0.99*(window.innerHeight/1440)*2560;
+
+
+  } else {
+  background_png.width=0.99*window.innerWidth;
+  background_png.height=0.99*(window.innerWidth/2560)*1440;
+  }
+  hoffset=(window.innerWidth-background_png.width)/2;
+  voffset=(window.innerHeight-background_png.height)/2;
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
+  background_png.setAttribute('class', 'overlays');
+  console.log(hoffset);
+  background_png.style.left=hoffset+"px";
+  background_png.style.top=voffset+"px";
+
+
+ var wd=background_png.width;
+
+//One-time creation of stimuli - all hidden
+        
+        var i_1a = document.createElement("img");
+        i_1a.setAttribute('src', obj.trials[trialno].tasks[0].l+'_u.png');
+        i_1a.setAttribute('class', 'overlays');
+        i_1a.width=window.wd/6;
+        i_1a.style.left = 0.1*wd+hoffset+ "px";
+        i_1a.style.top = 0.15*wd +voffset+ "px";
+        i_1a.style.visibility='hidden';
+        document.body.appendChild(i_1a);
+        i_1a.onclick=function() {
+          checkUpdate("1a");
+        }
+
+        var i_1b = document.createElement("img");
+        i_1b.setAttribute('src', obj.trials[trialno].tasks[0].m+'_u.png');
+        i_1b.setAttribute('class', 'overlays');
+        i_1b.width=window.wd/6;
+        i_1b.style.left = 0.4*wd+hoffset+ "px";
+        i_1b.style.top = 0.15*wd +voffset+ "px";
+        i_1b.style.visibility='hidden';
+        document.body.appendChild(i_1b);
+        i_1b.onclick=function() {
+          checkUpdate("1b");
+        }
+        var i_1c = document.createElement("img");
+        i_1c.setAttribute('src', obj.trials[trialno].tasks[0].r+'_u.png');
+        i_1c.setAttribute('class', 'overlays');
+        i_1c.width=window.wd/6;
+        i_1c.style.left = 0.7*wd+hoffset+ "px";
+        i_1c.style.top = 0.15*wd +voffset+ "px";
+        i_1c.style.visibility='hidden';
+        document.body.appendChild(i_1c);
+        i_1c.onclick=function() {
+          checkUpdate("1c");
+        }
+
+
+        var i_2a = document.createElement("img");
+        i_2a.setAttribute('src', 's1_u.png');
+        i_2a.setAttribute('class', 'overlays');
+        i_2a.width=window.wd/6;
+        i_2a.style.left = 0.1*wd+hoffset+ "px";
+        i_2a.style.top = 0.05*wd +voffset+ "px";
+        i_2a.style.visibility='hidden';
+        document.body.appendChild(i_2a);
+        i_2a.onclick=function() {
+          checkUpdate("2a");
+        }
+
+        var i_2b = document.createElement("img");
+        i_2b.setAttribute('src', 's1_u.png');
+        i_2b.setAttribute('class', 'overlays');
+        i_2b.width=window.wd/6;
+        i_2b.style.left = 0.4*wd+hoffset+ "px";
+        i_2b.style.top = 0.05*wd +voffset+ "px";
+        i_2b.style.visibility='hidden';
+        document.body.appendChild(i_2b);
+        i_2b.onclick=function() {
+          checkUpdate("2b");
+        }
+        var i_2c = document.createElement("img");
+        i_2c.setAttribute('src', 's2_u.png');
+        i_2c.setAttribute('class', 'overlays');
+        i_2c.width=window.wd/6;
+        i_2c.style.left = 0.7*wd+hoffset+ "px";
+        i_2c.style.top = 0.05*wd +voffset+ "px";
+        i_2c.style.visibility='hidden';
+        document.body.appendChild(i_2c);
+        i_2c.onclick=function() {
+          checkUpdate("2c");
+        }
+
+var i_0a = document.createElement("img");
+        i_0a.setAttribute('src', 'bl_u.png');
+        i_0a.setAttribute('class', 'overlays');
+        i_0a.width=window.wd/6;
+        i_0a.style.left = 0.1*wd+hoffset+ "px";
+        i_0a.style.top = 0.05*wd +voffset+ "px";
+        i_0a.style.visibility='hidden';
+        document.body.appendChild(i_0a);
+        i_0a.onclick=function() {
+          checkUpdate("0a");
+        }
+
+        var i_0b = document.createElement("img");
+        i_0b.setAttribute('src', 'bl_u.png');
+        i_0b.setAttribute('class', 'overlays');
+        i_0b.width=window.wd/6;
+        i_0b.style.left = 0.4*wd+hoffset+ "px";
+        i_0b.style.top = 0.05*wd +voffset+ "px";
+        i_0b.style.visibility='hidden';
+        document.body.appendChild(i_0b);
+        i_0b.onclick=function() {
+          checkUpdate("0b");
+        }
+        var i_0c = document.createElement("img");
+        i_0c.setAttribute('src', 'bl_u.png');
+        i_0c.setAttribute('class', 'overlays');
+        i_0c.width=window.wd/6;
+        i_0c.style.left = 0.7*wd+hoffset+ "px";
+        i_0c.style.top = 0.05*wd +voffset+ "px";
+        i_0c.style.visibility='hidden';
+        document.body.appendChild(i_0c);
+        i_0c.onclick=function() {
+          checkUpdate("0c");
+        }
+        var i_0d = document.createElement("img");
+        i_0d.setAttribute('src', 'bl_u.png');
+        i_0d.setAttribute('class', 'overlays');
+        i_0d.width=window.wd/6;
+        i_0d.style.left = 0.1*wd+hoffset+ "px";
+        i_0d.style.top = 0.05*wd +voffset+ "px";
+        i_0d.style.visibility='hidden';
+        document.body.appendChild(i_0d);
+        i_0d.onclick=function() {
+          checkUpdate("0d");
+        }
+
+        var i_0e = document.createElement("img");
+        i_0e.setAttribute('src', 'bl_u.png');
+        i_0e.setAttribute('class', 'overlays');
+        i_0e.width=window.wd/6;
+        i_0e.style.left = 0.4*wd+hoffset+ "px";
+        i_0e.style.top = 0.05*wd +voffset+ "px";
+        i_0e.style.visibility='hidden';
+        document.body.appendChild(i_0e);
+        i_0e.onclick=function() {
+          checkUpdate("0e");
+        }
+        var i_0f = document.createElement("img");
+        i_0f.setAttribute('src', 'bl_u.png');
+        i_0f.setAttribute('class', 'overlays');
+        i_0f.width=window.wd/6;
+        i_0f.style.left = 0.7*wd+hoffset+ "px";
+        i_0f.style.top = 0.05*wd +voffset+ "px";
+        i_0f.style.visibility='hidden';
+        document.body.appendChild(i_0f);
+        i_0f.onclick=function() {
+          checkUpdate("0f");
+        }
+
+        var fb = document.createElement("img");
+        fb.setAttribute('src', 'feedback_space.png');
+        fb.setAttribute('class', 'overlays');
+        fb.width=window.wd/2;
+        fb.style.left = 0.25*wd+hoffset+ "px";
+        fb.style.top = 0.1*wd +voffset+ "px";
+        fb.style.visibility='hidden';
+        document.body.appendChild(fb);
+
+
+newTrial();
+
+function nextTrial() {
+  clearInterval(nt);
+  console.log("Starting Trial");
+  trialno++;
+  subtrialssofar=-1;
+  if(trialno<totaltrials) {
+  newTrial();
+} else {
+fb.style.visibility='visible';
+}
+}
+
+function newTrial(){
+subtrialssofar++;
+  i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].r+'_u.png');
+allow=1;
+showTrial();
+}
+
+function showTrial(){
+  console.log("Show Trial")
+  i_1a.style.visibility='visible';
+  i_1b.style.visibility='visible';
+  i_1c.style.visibility='visible';
+}
+
+
+function checkUpdate(clicked){
+    console.log("ALLOW: "+allow);
+  if(allow==1){
+    if(clicked=="1a"){
+      i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].l+'_s.png');
+    }
+    if(clicked=="1b"){
+      i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].m+'_s.png');
+    }
+    if(clicked=="1c"){
+      i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].r+'_s.png');
+    }
+    allow=0;
+    console.log("Subtrials: "+obj.trials[trialno].subtrials);
+    console.log("Subtrialssofar: "+subtrialssofar);
+
+    gr=setInterval(getresp1, 1000);
+  }
+
+
+if(allow==2){
+ 
+  console.log("ALLOW2: "+clicked);
+if(clicked=="0a"){
+   i_0a.setAttribute('src', 'bl_s.png');
+   i_0b.setAttribute('src', 'bl_u.png');
+   i_0c.setAttribute('src', 'bl_u.png');
+   resp1=1;
+ }
+ if(clicked=="0b"){
+   i_0a.setAttribute('src', 'bl_u.png');
+   i_0b.setAttribute('src', 'bl_s.png');
+   i_0c.setAttribute('src', 'bl_u.png');
+   resp1=1;
+ }
+ if(clicked=="0c"){
+   i_0a.setAttribute('src', 'bl_u.png');
+   i_0b.setAttribute('src', 'bl_u.png');
+   i_0c.setAttribute('src', 'bl_s.png');
+   resp1=1;
+ }
+ if(clicked=="0d"){
+   i_0d.setAttribute('src', 'bl_s.png');
+   i_0e.setAttribute('src', 'bl_u.png');
+   i_0f.setAttribute('src', 'bl_u.png');
+   resp2=1;
+ }
+ if(clicked=="0e"){
+   i_0d.setAttribute('src', 'bl_u.png');
+   i_0e.setAttribute('src', 'bl_s.png');
+   i_0f.setAttribute('src', 'bl_u.png');
+   resp2=1;
+ }
+  if(clicked=="0f"){
+   i_0d.setAttribute('src', 'bl_u.png');
+   i_0e.setAttribute('src', 'bl_u.png');
+   i_0f.setAttribute('src', 'bl_s.png');
+   resp2=1;
+ }
+
+if((resp1==1 && obj.trials[trialno].subtrials==1) || (resp1==1 && resp2==1 && obj.trials[trialno].subtrials==2))
+  {
+ allow=0;
+ is=setInterval(interstitial,1000);
+  }
+
+}
+}
+
+function nextpart(){
+clearInterval(np);
+newTrial();
+
+}
+function interstitial(){
+clearInterval(is);
+  i_0a.style.visibility = 'hidden';
+  i_0b.style.visibility = 'hidden';
+  i_0c.style.visibility = 'hidden';
+  i_0d.style.visibility = 'hidden';
+  i_0e.style.visibility = 'hidden';
+  i_0f.style.visibility = 'hidden';
+  i_0a.setAttribute('src', 'bl_u.png');
+  i_0b.setAttribute('src', 'bl_u.png');
+  i_0c.setAttribute('src', 'bl_u.png');
+  i_0d.setAttribute('src', 'bl_u.png');
+  i_0e.setAttribute('src', 'bl_u.png');
+  i_0f.setAttribute('src', 'bl_u.png');
+cleanup_trial();
+nt=setInterval(nextTrial,1000);
+}
+
+
+function getresp1() {
+  console.log("Hiding");
+  clearInterval(gr);
+  i_1a.style.visibility = 'hidden';
+  i_1b.style.visibility = 'hidden';
+  i_1c.style.visibility = 'hidden';
+  if(subtrialssofar+1<obj.trials[trialno].subtrials) {
+   console.log("Second part of a trial");
+      np=setInterval(nextpart, 1000);
+      cleanup_subtrial();
+    }
+  else {
+    console.log("About to allow responses")
+  gr2=setInterval(getresp2, 1000);
+  }
+}
+
+function getresp2() {
+  clearInterval(gr2);
+  if(obj.trials[trialno].subtrials==1) {
+  console.log("Respond to one subtrial");
+  i_0a.style.top = 0.15*wd +voffset+ "px"; 
+  i_0b.style.top = 0.15*wd +voffset+ "px"; 
+  i_0c.style.top = 0.15*wd +voffset+ "px";  
+  i_0a.style.visibility = 'visible';
+  i_0b.style.visibility = 'visible';
+  i_0c.style.visibility = 'visible';
+}  else if(obj.trials[trialno].subtrials==2) {
+   console.log("Respond to two subtrials");
+  i_0a.style.top = 0.02*wd +voffset+ "px"; 
+  i_0b.style.top = 0.02*wd +voffset+ "px"; 
+  i_0c.style.top = 0.02*wd +voffset+ "px";  
+  i_0d.style.top = 0.31*wd +voffset+ "px"; 
+  i_0e.style.top = 0.31*wd +voffset+ "px"; 
+  i_0f.style.top = 0.31*wd +voffset+ "px";  
+  i_0a.style.visibility = 'visible';
+  i_0b.style.visibility = 'visible';
+  i_0c.style.visibility = 'visible';
+  i_0d.style.visibility = 'visible';
+  i_0e.style.visibility = 'visible';
+  i_0f.style.visibility = 'visible';
+}
+
+
+  allow=2;
+}
+
+function cleanup_trial() {
+  if (trialno+1<totaltrials) {
+    console.log("Cleaning up trial");
+  i_1a.setAttribute('src', obj.trials[trialno+1].tasks[0].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno+1].tasks[0].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno+1].tasks[0].r+'_u.png');
+}
+}
+
+function cleanup_subtrial() {
+  if (trialno<totaltrials) {
+    console.log("Cleaning up subtrial");
+  i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].r+'_u.png');
+}
+}
+
+ </script>
+
+
+</body>
+</html>
