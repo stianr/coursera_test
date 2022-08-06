@@ -41,11 +41,65 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+
+#balloon-container {
+  height: 100vh;
+  padding: 1em;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  visibility:  hidden;
+}
+
+.balloon {
+  height: 125px;
+  width: 105px;
+  border-radius: 75% 75% 70% 70%;
+  position: relative;
+}
+
+.balloon:before {
+  content: "";
+  height: 75px;
+  width: 1px;
+  padding: 1px;
+  background-color: #FDFD96;
+  display: block;
+  position: absolute;
+  top: 125px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.balloon:after {
+    content: "▲";
+    text-align: center;
+    display: block;
+    position: absolute;
+    color: inherit;
+    top: 120px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+@keyframes float {
+  from {transform: translateY(100vh);
+  opacity: 1;
+visibility:  visible;}
+  to {transform: translateY(-300vh);
+  opacity: 1;
+visibility:  visible;}
+}
 </style>
 </head>
 <body>
     <img id="background_png" src="jungle.png" width="500" />
 
+<div id="balloon-container">
 <div id="container" style="width:100%;">
   <img src="feedback.png" alt="Feedback" >
   <div id="centered">Well done!<br/>You did it in 7 seconds with 8 clicks!
@@ -63,13 +117,13 @@
   var hoffset=0;
   var voffset=0;
   if(winit/2560 > hinit/1440) {
-  background_png.height=window.innerHeight;
-  background_png.width=(window.innerHeight/1440)*2560;
+  background_png.height=0.99*window.innerHeight;
+  background_png.width=0.99*(window.innerHeight/1440)*2560;
 
 
   } else {
-  background_png.width=window.innerWidth;
-  background_png.height=(window.innerWidth/2560)*1440;
+  background_png.width=0.99*window.innerWidth;
+  background_png.height=0.99*(window.innerWidth/2560)*1440;
   }
   hoffset=(window.innerWidth-background_png.width)/2;
   voffset=(window.innerHeight-background_png.height)/2;
@@ -307,11 +361,50 @@ if(clicked=="3a"){
   document.getElementById('container').style.visibility="visible";
   document.getElementById('container').style.animationPlayState="running";
   document.getElementById('centered').innerHTML="Well done!<br/>You did it in "+ totaltime + " seconds with "+clickcount+" clicks!";
+   createBalloons(30);
   }
  }
 
 }
+
+function random(num) {
+  return Math.floor(Math.random()*num)
+}
+
+function getRandomStyles() {
+  var r = random(255);
+  var g = random(255);
+  var b = random(255);
+  var mt = random(200);
+  var ml = random(50);
+  var dur = random(5)+5;
+  return `
+  background-color: rgba(${r},${g},${b},0.7);
+  color: rgba(${r},${g},${b},0.7); 
+  box-shadow: inset -7px -3px 10px rgba(${r-10},${g-10},${b-10},0.7);
+  margin: ${mt}px 0 0 ${ml}px;
+  animation: float ${dur}s ease-in normal
+  `
+}
+
+function createBalloons(num) {
+  var balloonContainer = document.getElementById("balloon-container")
+  for (var i = num; i > 0; i--) {
+  var balloon = document.createElement("div");
+  balloon.className = "balloon";
+  balloon.style.cssText = getRandomStyles(); 
+  balloonContainer.append(balloon);
+  }
+}
+
+/* Balloon animation adapted from: Copyright (c) 2022 by Jemima (https://codepen.io/Jemimaabu/pen/vYEYdOy)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
+
 </script>
 
 </body>
 </html>
+
