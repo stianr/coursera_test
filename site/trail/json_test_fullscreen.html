@@ -40,10 +40,10 @@
 
 </head>
 <body>
-<button onclick="openFullscreen();">Open Fullscreen</button>
-<button onclick="closeFullscreen();">Close Fullscreen</button>
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="500" />
+ <button onclick="openFullscreen();">Open Fullscreen</button>
+<button onclick="closeFullscreen();">Close Fullscreen</button>
  <div id="lines">
  <div id="animals">
  <div id="instructions">
@@ -98,6 +98,8 @@ console.log("0.2 28/10/22 17:56");
   var fb_l = document.createElement("img");
   var fb_b = document.createElement("img");
     var targetposn=1;
+
+    var elem = document.documentElement;
 
 function goneFull() {
   if(winit/2560 > hinit/1440) {
@@ -304,7 +306,7 @@ function createLine(x1, y1, x2, y2) {
 }
 
 
-var elem = document.documentElement;
+
 function openFullscreen() {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
@@ -313,7 +315,7 @@ function openFullscreen() {
   } else if (elem.msRequestFullscreen) { /* IE11 */
     elem.msRequestFullscreen();
   }
-  goneFull();
+  setTimeout(function() {goneFull()}, 1000);
 }
 
 function closeFullscreen() {
