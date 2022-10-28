@@ -2,36 +2,41 @@
 "trialset":[
   {"trialnumber": 1,
   "trialtype": "single_A",
-  "trialitems": "2",
  "items":[ {
-      "name": "i_1a",
-      "xloc": 0.3,
-      "yloc": 0.2
+      "name": "i_1a", "xloc": 0.2, "yloc": 0.2, "posn": "1"
     },
     {
-      "name": "i_1b",
-      "xloc": 0.4,
-      "yloc": 0.7
+      "name": "i_2a", "xloc": 0.4, "yloc": 0.2, "posn": "2"
     }]
    },
    {
   "trialnumber": 2,
   "trialtype": "single_B",
-  "trialitems": "2",
  "items":[ {
-      "name": "i_1a",
-      "xloc": 0.3,
-      "yloc": 0.2
+      "name": "i_1b", "xloc": 0.3, "yloc": 0.2, "posn": "1"
     },
     {
-      "name": "i_1b",
-      "xloc": 0.4,
-      "yloc": 0.7
+      "name": "i_2b", "xloc": 0.3, "yloc": 0.1, "posn": "2"
     },
         {
-      "name": "i_1b",
-      "xloc": 0.4,
-      "yloc": 0.7
+      "name": "i_3b", "xloc": 0.4, "yloc": 0.1, "posn": "3"
+    }
+    ]
+    },
+     {
+  "trialnumber": 2,
+  "trialtype": "single_B",
+ "items":[ {
+      "name": "i_1a", "xloc": 0.3, "yloc": 0.2, "posn": "1"
+    },
+    {
+      "name": "i_2a", "xloc": 0.3, "yloc": 0.1, "posn": "2"
+    },
+        {
+      "name": "i_3a", "xloc": 0.4, "yloc": 0.1, "posn": "3"
+    },
+        {
+      "name": "i_4a", "xloc": 0.3, "yloc": 0.3, "posn": "4"
     }
     ]
     }

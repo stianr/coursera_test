@@ -1,21 +1,240 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="shortcut icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Trail-Making Demo</title>
+	<title>TEST 2</title>
 	<style>
+		 <style>
+      * { padding: 0; margin: 0; }
+      .overlays {position: absolute;}
+#container {
+   z-index: 3;
+   position: relative;
+  text-align: center;
+  color: black;
+  top: 0;
+  animation-name: example;
+  animation-duration: 1s;
+  transform: scale(1);
+  visibility: hidden;
+  animation-play-state: paused;
+}
 	</style>
 </head>
 <body>
-
+ <img id="background_png" src="jungle.png" width="500" />
+ <div id="container" style="width:100%;">
+  <img src="feedback.png" alt="Feedback" >
+  <div id="centered">Well done!<br/>You did it in 7 seconds with 8 clicks!
+  </div>
 <script>
-	fetch('trial.json')
-    .then((response) => response.json())
-    .then((json) => console.log(json));
+
+ var clickcount=0;
+  var starttime=new Date().getTime();
+  var totaltime=0;
+  var winit=window.innerWidth;
+  var hinit=window.innerHeight;
+  var nextclick="1a";
+  var hoffset=0;
+  var voffset=0;
+  var names=null;
+  var nf = 0;
+  if(winit/2560 > hinit/1440) {
+  background_png.height=0.99*window.innerHeight;
+  background_png.width=0.99*(window.innerHeight/1440)*2560;
+
+
+  } else {
+  background_png.width=0.99*window.innerWidth;
+  background_png.height=0.99*(window.innerWidth/2560)*1440;
+  }
+  hoffset=(window.innerWidth-background_png.width)/2;
+  voffset=(window.innerHeight-background_png.height)/2;
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
+  background_png.setAttribute('class', 'overlays');
+ // console.log(hoffset);
+  background_png.style.left=hoffset+"px";
+  background_png.style.top=voffset+"px";
+  var wd=background_png.width;
+ const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+  var i_1a = document.createElement("img");
+  var i_1b = document.createElement("img");
+  var i_2a = document.createElement("img");
+  var i_2b = document.createElement("img");
+  var i_3a = document.createElement("img");
+  var i_3b = document.createElement("img");
+  var i_4a = document.createElement("img");
+  var i_4b = document.createElement("img");
+  var targetposn=1;
+
+async function loadNames() {
+  const response = await fetch('trial.json');
+  names = await response.json();
+ }
+
+
+
+function loadImages() {
+   
+
+ 
+ for(f in pics){
+ 	      tp=pics[f];
+ //	      console.log( tp+'_ns.png');
+        eval(tp).setAttribute('src', tp+'_ns.png');
+        eval(tp).setAttribute('class', 'overlays');
+        eval(tp).width=window.wd/15;
+        eval(tp).alt=tp;
+        eval(tp).style.left = 0.1*f*wd+hoffset+ "px";
+        eval(tp).style.top = 0.1*f*wd +voffset+ "px";
+        eval(tp).setAttribute('posn', 0);
+        document.body.appendChild(eval(tp));
+        eval(tp).onclick=function() {
+          checkUpdate(this.alt);
+        }
+
+      }
+
+/*  
+
+        i_1b.setAttribute('src', '1_b_ns.png');
+        i_1b.setAttribute('class', 'overlays');
+        i_1b.width=window.wd/15;
+        i_1b.style.left = 0.3*wd +hoffset+ "px";
+        i_1b.style.top = 0.2*wd +voffset+ "px";
+        i_1b.setAttribute('posn', 0);
+        document.body.appendChild(i_1b);
+        i_1b.onclick=function() {
+          checkUpdate("i_1b",i_1b.getAttribute("posn"));
+        }
+
+
+        i_2a.setAttribute('src', '2_a_ns.png');
+        i_2a.setAttribute('class', 'overlays');
+        i_2a.width=window.wd/15;
+        i_2a.style.left = 0.5*wd+hoffset+ "px";
+        i_2a.style.top = 0.18*wd +voffset+ "px";
+        i_2a.setAttribute('posn', 0);
+        document.body.appendChild(i_2a);
+        i_2a.onclick=function() {
+          checkUpdate("i_2a",i_2a.getAttribute("posn"));
+        }
+
+        i_2b.setAttribute('src', '2_b_ns.png');
+        i_2b.setAttribute('class', 'overlays');
+        i_2b.width=window.wd/15;
+        i_2b.style.left = 0.8*wd+ hoffset+"px";
+        i_2b.style.top = 0.05*wd + voffset+"px";
+        document.body.appendChild(i_2b);
+        i_2b.setAttribute('posn', 0);
+        i_2b.onclick=function() {
+          checkUpdate("i_2b",i_2b.getAttribute("posn"));
+        }
+
+      i_3a.setAttribute('src', '3_a_ns.png');
+        i_3a.setAttribute('class', 'overlays');
+        i_3a.width=window.wd/15;
+        i_3a.style.left = 0.85*wd+hoffset+ "px";
+        i_3a.style.top = 0.35*wd +voffset+ "px";
+        document.body.appendChild(i_3a);
+        i_3a.onclick=function() {
+          checkUpdate("3a");
+        }
+
+        i_3b.setAttribute('src', '3_b_ns.png');
+        i_3b.setAttribute('class', 'overlays');
+        i_3b.width=window.wd/15;
+        i_3b.style.left = 0.1*wd+hoffset+ "px";
+        i_3b.style.top = 0.4*wd +voffset+ "px";
+        document.body.appendChild(i_3b);
+        i_3b.onclick=function() {
+          checkUpdate("3b");
+        }
+
+        i_4a.setAttribute('src', '4_a_ns.png');
+        i_4a.setAttribute('class', 'overlays');
+        i_4a.width=window.wd/15;
+        i_4a.style.left = 0.55*wd+ hoffset+"px";
+        i_4a.style.top = 0.32*wd +voffset+ "px";
+        document.body.appendChild(i_4a);
+        i_4a.onclick=function() {
+          checkUpdate("4a");
+        }
+
+        i_4b.setAttribute('src', '4_b_ns.png');
+        i_4b.setAttribute('class', 'overlays');
+        i_4b.width=window.wd/15;
+        i_4b.style.left = 0.22*wd+hoffset+ "px";
+        i_4b.style.top = 0.27*wd +voffset+ "px";
+        document.body.appendChild(i_4b);
+        i_4b.onclick=function() {
+          checkUpdate("4b");
+        }
+*/
+
+ }
+
+
+function init(n) {
+for(f in pics) {
+	tp=pics[f];
+	eval(tp).style.visibility="hidden";
+	eval(tp).setAttribute('src', tp+'_ns.png');
+}	
+i_1a.style.visibility="hidden";
+i_1b.style.visibility="hidden";
+i_2a.style.visibility="hidden";
+i_2b.style.visibility="hidden";
+i_3a.style.visibility="hidden";
+i_3b.style.visibility="hidden";
+i_4a.style.visibility="hidden";
+i_4b.style.visibility="hidden";
+for(f in names.trialset[n].items) {
+	i=names.trialset[n].items[f].name;
+	eval(i).style.visibility="visible";
+  eval(i).setAttribute('posn', names.trialset[n].items[f].posn);
+  eval(i).style.left = names.trialset[n].items[f].xloc*wd+hoffset+ "px";
+  eval(i).style.top = names.trialset[n].items[f].yloc*wd +voffset+ "px";
+  //This is what tells us what number this stimulus is in the required order
+  console.log(i+ " : " +  names.trialset[n].items[f].posn );
+}
+//This trial, get what needs to be on the screen
+//for (f in names.trialset.trialnumber[n].items){
+//console.log(f);
+//}
+}
+
+
+function checkUpdate(stim){
+
+    clickcount++;
+    thisposn=eval(stim).getAttribute("posn");
+    if(thisposn==targetposn) {
+     eval(stim).setAttribute('src', stim+'_s.png');
+     targetposn++;
+     if(targetposn==names.trialset[nf].items.length+1) {
+     	nf++; 
+     	targetposn=1; 
+     	console.log("done");
+     	init(nf);}
+    }
+    console.log(thisposn);
+
+  }
+
+loadNames()
+.then(function(n) {init(nf);})
+loadImages();
+
+
+
+    
 </script>
 </body>
 </html>
