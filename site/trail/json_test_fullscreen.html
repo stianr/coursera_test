@@ -40,7 +40,7 @@
 
 </head>
 <body>
-  <button onclick="openFullscreen();">Open Fullscreen</button>
+<button onclick="openFullscreen();">Open Fullscreen</button>
 <button onclick="closeFullscreen();">Close Fullscreen</button>
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="500" />
@@ -64,6 +64,7 @@
 
 console.log("0.2 28/10/22 17:56");
 
+
   var clickcount=0;
   var starttime=new Date().getTime();
   var totaltime=0;
@@ -75,6 +76,30 @@ console.log("0.2 28/10/22 17:56");
   var names=null;
   var nf = 0;
   var tottrial=0;
+   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+ const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+ var wd=0;
+ var ht=0;
+
+  var i_1a = document.createElement("img");
+  var i_1b = document.createElement("img");
+  var i_2a = document.createElement("img");
+  var i_2b = document.createElement("img");
+  var i_3a = document.createElement("img");
+  var i_3b = document.createElement("img");
+  var i_4a = document.createElement("img");
+  var i_4b = document.createElement("img");
+
+  var inst_z = document.createElement("img");
+  var inst_l = document.createElement("img");
+  var inst_b = document.createElement("img");
+
+  var fb_z = document.createElement("img");
+  var fb_l = document.createElement("img");
+  var fb_b = document.createElement("img");
+    var targetposn=1;
+
+function goneFull() {
   if(winit/2560 > hinit/1440) {
   background_png.height=0.99*window.innerHeight;
   background_png.width=0.99*(window.innerHeight/1440)*2560;
@@ -96,32 +121,17 @@ console.log("0.2 28/10/22 17:56");
 
 h=hoffset;
 v=voffset;
-  var wd=background_png.width;
-  var ht=background_png.height;
- const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
- const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+  wd=background_png.width;
+  ht=background_png.height;
 
-  var i_1a = document.createElement("img");
-  var i_1b = document.createElement("img");
-  var i_2a = document.createElement("img");
-  var i_2b = document.createElement("img");
-  var i_3a = document.createElement("img");
-  var i_3b = document.createElement("img");
-  var i_4a = document.createElement("img");
-  var i_4b = document.createElement("img");
 
-  var inst_z = document.createElement("img");
-  var inst_l = document.createElement("img");
-  var inst_b = document.createElement("img");
 
-  var fb_z = document.createElement("img");
-  var fb_l = document.createElement("img");
-  var fb_b = document.createElement("img");
-
-  //var inst_g = document.createElement("img");
-  //var fb_g = document.createElement("img");
-
-  var targetposn=1;
+  loadNames()
+.then(function(n) {
+tottrial=names.trialset.length;
+  init(nf);})
+loadImages();
+}
 
 //Needs to be an async function
 async function loadNames() {
@@ -145,7 +155,7 @@ function loadImages() {
         }
       }
 
- for(f in insts){
+ /*for(f in insts){
         tp=insts[f];
         eval(tp).setAttribute('src', tp+'.png');
         eval(tp).setAttribute('class', 'overlays');
@@ -158,6 +168,7 @@ function loadImages() {
           checkUpdate(this.alt);
         }
       }
+      */
 
 
       
@@ -179,14 +190,7 @@ for(f in pics) {
 	eval(tp).style.visibility="hidden";
 	eval(tp).setAttribute('src', tp+'_ns.png');
 }	
-i_1a.style.visibility="hidden";
-i_1b.style.visibility="hidden";
-i_2a.style.visibility="hidden";
-i_2b.style.visibility="hidden";
-i_3a.style.visibility="hidden";
-i_3b.style.visibility="hidden";
-i_4a.style.visibility="hidden";
-i_4b.style.visibility="hidden";
+
   console.log("INIT: "+n);
 if(names.trialset[n].hasOwnProperty('instructions')) {
   console.log("NEEDS INSTRUCTIONS");
@@ -264,11 +268,7 @@ function end(){
   }
 
 
-loadNames()
-.then(function(n) {
-tottrial=names.trialset.length;
-  init(nf);})
-loadImages();
+
 
 
 function createLineElement(x, y, length, angle) {
@@ -313,6 +313,7 @@ function openFullscreen() {
   } else if (elem.msRequestFullscreen) { /* IE11 */
     elem.msRequestFullscreen();
   }
+  goneFull();
 }
 
 function closeFullscreen() {
