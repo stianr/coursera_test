@@ -2,7 +2,9 @@
 "trialset":[
   {"trialnumber": 1,
   "trialtype": "single_A",
- "items":[ {
+  "instructions": "inst_z",
+  "inst_time": "before",
+  "items":[ {
       "name": "i_1a", "xloc": 0.3, "yloc": 0.3, "posn": "1"
     },
     {
@@ -12,7 +14,7 @@
    {
   "trialnumber": 2,
   "trialtype": "single_B",
- "items":[ {
+  "items":[ {
       "name": "i_1b", "xloc": 0.3, "yloc": 0.2, "posn": "1"
     },
     {
@@ -26,7 +28,7 @@
      {
   "trialnumber": 3,
   "trialtype": "single_A",
- "items":[ {
+  "items":[ {
       "name": "i_1a", "xloc": 0.8, "yloc": 0.8, "posn": "1"
     },
     {
@@ -43,7 +45,9 @@
      {
   "trialnumber": 4,
   "trialtype": "Dual",
- "items":[ {
+  "instructions": "inst_b",
+  "inst_time": "before",
+  "items":[ {
       "name": "i_1a", "xloc": 0.9, "yloc": 0.5, "posn": "1"
     },
     {

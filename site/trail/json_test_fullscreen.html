@@ -40,6 +40,8 @@
 
 </head>
 <body>
+  <button onclick="openFullscreen();">Open Fullscreen</button>
+<button onclick="closeFullscreen();">Close Fullscreen</button>
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="500" />
  <div id="lines">
@@ -299,6 +301,28 @@ function createLine(x1, y1, x2, y2) {
     var alpha = Math.PI - Math.atan2(-b, a);
 
     return createLineElement(x, y, c, alpha);
+}
+
+
+var elem = document.documentElement;
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
 }
   
 </script>
