@@ -40,9 +40,6 @@
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="0" />
  <button id="button" onclick="openFullscreen();">Open Fullscreen</button>
- <button id="button" onclick="startdownload();">Downloadfiles</button>
- <a href="json_test_fullscreen.html" download>Download Page</a>
-<a href="trial.json" download>Download json</a>
  <div id="lines">
  <div id="animals">
  <div id="instructions">
@@ -332,7 +329,7 @@ function createLine(x1, y1, x2, y2) {
 
 
 function openFullscreen() {
-    button.style.visibility="hidden";
+
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) { /* Safari */
