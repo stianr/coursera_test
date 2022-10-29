@@ -22,6 +22,7 @@ body {
 
 #lines {
    z-index: 0;
+   margin-top: -2.5%;
       width: 100%;
    position: absolute;
 }
@@ -77,6 +78,19 @@ body {
 }
 
 
+button {
+  margin-top: 20px;
+  line-height: 60px;
+  font-weight: bold;
+  padding: 0 40px;
+  background: forestgreen;
+  border: none;
+}
+button:hover {
+  background: palegreen;
+}
+
+
 </style>
 
 </head>
@@ -116,7 +130,7 @@ console.log("0.2 29/10/22 16:46");
   var nf = 0;
   var tottrial=0;
   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
-  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b", "fb_e"];
   var wd=0;
   var ht=0;
   const inittime = new Date();
@@ -182,9 +196,11 @@ function goneFull() {
 loadNames()
 .then(function(n) {
 tottrial=names.trialset.length;
- init(nf);
+ //init(nf);
 })
 loadImages();
+
+
 }
 
 //Needs to be an async function
@@ -312,6 +328,9 @@ function checkUpdate(stim){
    } else if(stim=="fb_b") {
     eval(stim).style.visibility="hidden";  
     end();  
+    } else if(stim=="fb_e") {
+    eval(stim).style.visibility="hidden";  
+    closeFullscreen(); 
     } else{
     clickcount++;
     thisposn=eval(stim).getAttribute("posn");
@@ -363,6 +382,18 @@ function checkUpdate(stim){
 
 //End the study and save the data locally
 function end(){
+  i="fb_e";
+       eval(i).style.visibility="visible";
+          tmp_width=eval(i).width;
+    tmp_height=eval(i).height;
+    winit=window.innerWidth;
+    hinit=window.innerHeight;
+
+    tmp_l=(winit-tmp_width)/2;
+    tmp_t=(hinit-tmp_height)/2;
+    eval(i).style.left=tmp_l+ "px";
+    eval(i).style.top=tmp_t+ "px";
+
     createBalloons(30);
 
     var a = document.createElement("a");
@@ -405,7 +436,7 @@ function createLine(x1, y1, x2, y2) {
 
 
 function openFullscreen() {
-
+  button.style.visibility="hidden";
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.webkitRequestFullscreen) { /* Safari */
@@ -477,6 +508,9 @@ function createBalloons(num) {
   balloonContainer.append(balloon);
   }
 }
+
+
+
 
 /* Balloon animation adapted from: Copyright (c) 2022 by Jemima (https://codepen.io/Jemimaabu/pen/vYEYdOy)
 
