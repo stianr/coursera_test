@@ -1,56 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
+	<link rel="shortcut icon" href="favicon.ico">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-  <title>Trail-Making Demo</title>
-	  <style>
+	<title>Jungle Friends</title>
+	<style>
       * { padding: 0; margin: 0; }
       .overlays {position: absolute;}
-#container {
-   z-index: 3;
-   position: relative;
-  text-align: center;
-  color: black;
-  top: 0;
-  animation-name: example;
-  animation-duration: 1s;
-  transform: scale(1);
-  visibility: hidden;
-  animation-play-state: paused;
+
+
+body {
+  margin: 0;
 }
 
-@keyframes example {
- 0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+#everything {
+   z-index: -3;
+   width: 100%;  
+   
+   }
 
-#centered {
-   font-family: 'Mouse Memoirs', sans-serif;
-     font-size: 36px;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translate(-50%, -50%);
+#lines {
+   z-index: 0;
+      width: 100%;
+   position: absolute;
 }
 
 
 #balloon-container {
   height: 100vh;
-  padding: 1em;
+  padding: -0.5em;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  visibility:  hidden;
 }
 
 .balloon {
@@ -88,284 +71,382 @@
 
 @keyframes float {
   from {transform: translateY(100vh);
-  opacity: 1;
-visibility:  visible;}
+  opacity: 1;}
   to {transform: translateY(-300vh);
-  opacity: 1;
-visibility:  visible;}
+  opacity: 0;}
 }
+
+
 </style>
+
 </head>
 <body>
-    <img id="background_png" src="jungle.png" width="500" />
-
-<div id="balloon-container">
-<div id="container" style="width:100%;">
-  <img src="feedback.png" alt="Feedback" >
-  <div id="centered">Well done!<br/>You did it in 7 seconds with 8 clicks!
-  </div>
+ <div id="everything"> 
+ <img id="background_png" src="jungle.png" width="0" />
+ <button id="button" onclick="openFullscreen();">Open Fullscreen</button>
+ <div id="balloon-container">
+ <div id="lines">
+ 
+</div>
 </div>
 </div>
 
 <script>
+
+// To do:
+// 1. Draw lines between choices
+// 2. Feedback messages and pauses between trials
+// 3. Save data at end
+
+
+
+
+console.log("0.2 29/10/22 16:46");
+
+
   var clickcount=0;
-  var starttime=new Date().getTime();
+ // var starttime=new Date().getTime();
   var totaltime=0;
   var winit=window.innerWidth;
   var hinit=window.innerHeight;
   var nextclick="1a";
   var hoffset=0;
   var voffset=0;
+  var names=null;
+  var nf = 0;
+  var tottrial=0;
+  const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+  var wd=0;
+  var ht=0;
+  const inittime = new Date();
+  const agent = navigator.userAgent;
+  var optxt="init: "+inittime.toISOString()+"\n"+"agent: "+agent+"\n";
+  console.log(optxt);
+
+
+  var i_1a = document.createElement("img");
+  var i_1b = document.createElement("img");
+  var i_2a = document.createElement("img");
+  var i_2b = document.createElement("img");
+  var i_3a = document.createElement("img");
+  var i_3b = document.createElement("img");
+  var i_4a = document.createElement("img");
+  var i_4b = document.createElement("img");
+
+  var inst_z = document.createElement("img");
+  var inst_l = document.createElement("img");
+  var inst_b = document.createElement("img");
+
+  var fb_z = document.createElement("img");
+  var fb_l = document.createElement("img");
+  var fb_b = document.createElement("img");
+
+  var tr_sttime=Date.now();
+  var targetposn=1;
+
+  var elem = document.documentElement;
+  var start = Date.now(); 
+  this.addEventListener("DOMContentLoaded", preloadImages, true);
+
+//Run once gone fullscreen to adapt display parameters to the individual screen
+function goneFull() {
+  
+  winit=window.innerWidth;
+  hinit=window.innerHeight;
   if(winit/2560 > hinit/1440) {
-  background_png.height=0.99*window.innerHeight;
-  background_png.width=0.99*(window.innerHeight/1440)*2560;
+  background_png.height=0.999*window.innerHeight;
+  background_png.width=0.999*(window.innerHeight/1440)*2560;
 
 
   } else {
-  background_png.width=0.99*window.innerWidth;
-  background_png.height=0.99*(window.innerWidth/2560)*1440;
+  background_png.width=0.999*window.innerWidth;
+  background_png.height=0.999*(window.innerWidth/2560)*1440;
   }
   hoffset=(window.innerWidth-background_png.width)/2;
   voffset=(window.innerHeight-background_png.height)/2;
-  var feedback_voffset=(window.innerHeight-412)/2;
-  container.style.top=feedback_voffset+"px";
   background_png.setAttribute('class', 'overlays');
-  console.log(hoffset);
+  console.log("Hoffset:"+hoffset);
+  console.log("Hinit:"+ hinit);
   background_png.style.left=hoffset+"px";
   background_png.style.top=voffset+"px";
-  var wd=background_png.width;
 
-        
-        var i_1a = document.createElement("img");
-        i_1a.setAttribute('src', '1_a_ns.png');
-        i_1a.setAttribute('class', 'overlays');
-        i_1a.width=window.wd/15;
-        i_1a.style.left = 0.1*wd+hoffset+ "px";
-        i_1a.style.top = 0.1*wd +voffset+ "px";
-        document.body.appendChild(i_1a);
-        i_1a.onclick=function() {
-          checkUpdate("1a");
-        }
-
-        var i_1b = document.createElement("img");
-        i_1b.setAttribute('src', '1_b_ns.png');
-        i_1b.setAttribute('class', 'overlays');
-        i_1b.width=window.wd/15;
-        i_1b.style.left = 0.3*wd +hoffset+ "px";
-        i_1b.style.top = 0.2*wd +voffset+ "px";
-        document.body.appendChild(i_1b);
-        i_1b.onclick=function() {
-          checkUpdate("1b");
-        }
-
-        var i_2a = document.createElement("img");
-        i_2a.setAttribute('src', '2_a_ns.png');
-        i_2a.setAttribute('class', 'overlays');
-        i_2a.width=window.wd/15;
-        i_2a.style.left = 0.5*wd+hoffset+ "px";
-        i_2a.style.top = 0.18*wd +voffset+ "px";
-        document.body.appendChild(i_2a);
-        i_2a.onclick=function() {
-          checkUpdate("2a");
-        }
-
-         var i_2b = document.createElement("img");
-        i_2b.setAttribute('src', '2_b_ns.png');
-        i_2b.setAttribute('class', 'overlays');
-        i_2b.width=window.wd/15;
-        i_2b.style.left = 0.8*wd+ hoffset+"px";
-        i_2b.style.top = 0.05*wd + voffset+"px";
-        document.body.appendChild(i_2b);
-        i_2b.onclick=function() {
-          checkUpdate("2b");
-        }
-
-        var i_3a = document.createElement("img");
-        i_3a.setAttribute('src', '3_a_ns.png');
-        i_3a.setAttribute('class', 'overlays');
-        i_3a.width=window.wd/15;
-        i_3a.style.left = 0.85*wd+hoffset+ "px";
-        i_3a.style.top = 0.35*wd +voffset+ "px";
-        document.body.appendChild(i_3a);
-        i_3a.onclick=function() {
-          checkUpdate("3a");
-        }
-
-        var i_3b = document.createElement("img");
-        i_3b.setAttribute('src', '3_b_ns.png');
-        i_3b.setAttribute('class', 'overlays');
-        i_3b.width=window.wd/15;
-        i_3b.style.left = 0.1*wd+hoffset+ "px";
-        i_3b.style.top = 0.4*wd +voffset+ "px";
-        document.body.appendChild(i_3b);
-        i_3b.onclick=function() {
-          checkUpdate("3b");
-        }
-
-        var i_4a = document.createElement("img");
-        i_4a.setAttribute('src', '4_a_ns.png');
-        i_4a.setAttribute('class', 'overlays');
-        i_4a.width=window.wd/15;
-        i_4a.style.left = 0.55*wd+ hoffset+"px";
-        i_4a.style.top = 0.32*wd +voffset+ "px";
-        document.body.appendChild(i_4a);
-        i_4a.onclick=function() {
-          checkUpdate("4a");
-        }
-
-        var i_4b = document.createElement("img");
-        i_4b.setAttribute('src', '4_b_ns.png');
-        i_4b.setAttribute('class', 'overlays');
-        i_4b.width=window.wd/15;
-        i_4b.style.left = 0.22*wd+hoffset+ "px";
-        i_4b.style.top = 0.27*wd +voffset+ "px";
-        document.body.appendChild(i_4b);
-        i_4b.onclick=function() {
-          checkUpdate("4b");
-        }
+  h=hoffset;
+  v=voffset;
+  wd=background_png.width;
+  ht=background_png.height;
+  start = Date.now();
 
 
-        var l_1= document.createElement("img");
-        l_1.setAttribute('src', 'line_1.png');
-        l_1.setAttribute('class', 'overlays');
-        l_1.width=window.wd/6.7;
-        l_1.style.left = 0.16*wd +hoffset+ "px";
-        l_1.style.top = 0.14*wd +voffset+ "px";
-        document.body.appendChild(l_1);
-        l_1.style.visibility="hidden";
 
+loadNames()
+.then(function(n) {
+tottrial=names.trialset.length;
+ init(nf);
+})
+loadImages();
+}
 
-        var l_2= document.createElement("img");
-        l_2.setAttribute('src', 'line_2.png');
-        l_2.setAttribute('class', 'overlays');
-        l_2.width=window.wd/7;
-        l_2.style.left = 0.36*wd +hoffset+ "px";
-        l_2.style.top = 0.22*wd +voffset+ "px";
-        document.body.appendChild(l_2);
-        l_2.style.visibility="hidden";
-
-
-        var l_3= document.createElement("img");
-        l_3.setAttribute('src', 'line_3.png');
-        l_3.setAttribute('class', 'overlays');
-        l_3.width=window.wd/4.1;
-        l_3.style.left = 0.56*wd +hoffset+ "px";
-        l_3.style.top = 0.095*wd +voffset+ "px";
-        document.body.appendChild(l_3);
-        l_3.style.visibility="hidden";
-
-        var l_4= document.createElement("img");
-        l_4.setAttribute('src', 'line_4.png');
-        l_4.setAttribute('class', 'overlays');
-        l_4.width=window.wd/27;
-        l_4.style.left = 0.837*wd +hoffset+ "px";
-        l_4.style.top = 0.115*wd +voffset+ "px";
-        document.body.appendChild(l_4);
-        l_4.style.visibility="hidden";
-
-        var l_5= document.createElement("img");
-        l_5.setAttribute('src', 'line_5.png');
-        l_5.setAttribute('class', 'overlays');
-        l_5.width=window.wd/1.42;
-        l_5.style.left = 0.16*wd +hoffset+ "px";
-        l_5.style.top = 0.4*wd +voffset+ "px";
-        document.body.appendChild(l_5);
-        l_5.style.visibility="hidden";
-
-        var l_6= document.createElement("img");
-        l_6.setAttribute('src', 'line_6.png');
-        l_6.setAttribute('class', 'overlays');
-        l_6.width=window.wd/2.5;
-        l_6.style.left = 0.152*wd +hoffset+ "px";
-        l_6.style.top = 0.335*wd +voffset+ "px";
-        document.body.appendChild(l_6);
-        l_6.style.visibility="hidden";
-
-        var l_7= document.createElement("img");
-        l_7.setAttribute('src', 'line_7.png');
-        l_7.setAttribute('class', 'overlays');
-        l_7.width=window.wd/3.5;
-        l_7.style.left = 0.28*wd +hoffset+ "px";
-        l_7.style.top = 0.318*wd +voffset+ "px";
-        document.body.appendChild(l_7);
-        l_7.style.visibility="hidden";
-
-function checkUpdate(clicked){
-    console.log(clicked);
-    clickcount++;
-if(clicked=="1a"){
-  if(nextclick=="1a"){
-   starttime=new Date().getTime();
-   i_1a.setAttribute('src', '1_a_s.png');
-   nextclick="1b";
-  }
- }
-if(clicked=="1b"){
-  if(nextclick=="1b"){
-  i_1b.setAttribute('src', '1_b_s.png');
-  l_1.style.visibility="visible";
-  nextclick="2a";
-  }
- }
-if(clicked=="2a"){
-  if(nextclick=="2a"){
-  i_2a.setAttribute('src', '2_a_s.png');
-  l_2.style.visibility="visible";
-  nextclick="2b";
-  }
+//Needs to be an async function
+async function loadNames() {
+  const response = await fetch('trial.json');
+  names = await response.json();
  }
 
-if(clicked=="2b"){
-  if(nextclick=="2b"){
-  i_2b.setAttribute('src', '2_b_s.png');
-  l_3.style.visibility="visible";
-  nextclick="3a";
-  }
+
+ //Take all of the files names in pics, import and make addressable
+function loadImages() {
+ for(f in pics){
+ 	      tp=pics[f];
+        eval(tp).setAttribute('src', tp+'_ns.png');
+        eval(tp).setAttribute('class', 'overlays');
+        eval(tp).width=window.wd/10;
+        eval(tp).height=window.wd/10;
+        eval(tp).alt=tp;
+        eval(tp).setAttribute('posn', 0);
+        document.body.appendChild(eval(tp));
+        eval(tp).onclick=function() {
+          checkUpdate(this.alt);
+        }
+      }
+
+ for(f in insts){
+        tp=insts[f];
+        eval(tp).setAttribute('src', tp+'.png');
+        eval(tp).setAttribute('class', 'overlays');
+        eval(tp).width=eval(tp).width;
+        eval(tp).height=eval(tp).height;
+        eval(tp).alt=tp;
+        eval(tp).setAttribute('posn', 0);
+ //       document.getElementById("instructions").appendChild(eval(tp));
+        document.body.appendChild(eval(tp));
+        eval(tp).onclick=function() {
+          checkUpdate(this.alt);
+        }
+      }
+     
+
  }
 
-if(clicked=="3a"){
-  if(nextclick=="3a"){
-  i_3a.setAttribute('src', '3_a_s.png');
-  l_4.style.visibility="visible";
-  nextclick="3b";
-  }
- }
 
- if(clicked=="3b"){
+function clearup(){
 
-  if(nextclick=="3b"){
-  i_3b.setAttribute('src', '3_b_s.png');
-  l_5.style.visibility="visible";
-  nextclick="4a";
-  }
- }
+    //Remove any lines from the previous trial
+const list = document.getElementById("lines");
+while (list.hasChildNodes()) {
+  list.removeChild(list.firstChild);
+}
 
- if(clicked=="4a"){
-  if(nextclick=="4a"){
-  i_4a.setAttribute('src', '4_a_s.png');
-  l_6.style.visibility="visible";
-  nextclick="4b";
-  }
- }
+//Hide all the animal circles and change them back to unselected
+for(f in pics) {
+    tp=pics[f];
+    eval(tp).style.visibility="hidden";
+    eval(tp).setAttribute('src', tp+'_ns.png');
+}   
 
- if(clicked=="4b"){
-  if(nextclick=="4b"){
-  i_4b.setAttribute('src', '4_b_s.png');
-  l_7.style.visibility="visible";
-  totaltime=new Date().getTime();
-    console.log(totaltime);
-    console.log(starttime);
-  totaltime=totaltime-starttime;
-  totaltime=Math.round(totaltime/100)/10;
-  console.log(totaltime);
-  document.getElementById('container').style.visibility="visible";
-  document.getElementById('container').style.animationPlayState="running";
-  document.getElementById('centered').innerHTML="Well done!<br/>You did it in "+ totaltime + " seconds with "+clickcount+" clicks!";
-   createBalloons(30);
+for(f in insts) {
+    tp=insts[f];
+    eval(tp).style.visibility="hidden";
+}  
+}
+
+function init(n) {
+   
+ clearup();
+
+//Check from the JSON whether this trial has instructions
+//If so, show them
+//Currently doesn't display them so goes straight on to trial
+optxt+="trial: "+n+"\n";
+optxt+="trialtype: "+names.trialset[n].trialtype+"\n";
+optxt+="number_animals: "+names.trialset[nf].items.length+"\n";
+if(names.trialset[n].hasOwnProperty('instructions')) {
+  if(names.trialset[n].inst_time=="before") {
+    i=names.trialset[n].instructions;
+    eval(i).style.visibility="visible";
+    tmp_width=eval(i).width;
+    tmp_height=eval(i).height;
+    winit=window.innerWidth;
+    hinit=window.innerHeight;
+
+    tmp_l=(winit-tmp_width)/2;
+    tmp_t=(hinit-tmp_height)/2;
+    eval(i).style.left=tmp_l+ "px";
+    eval(i).style.top=tmp_t+ "px";
+    console.log("I: "+i);
   }
- }
+  else {
+    placestim(nf);
+  }
 
 }
+else {placestim(nf);
+}
+}
+
+//Put the animals in the correct position for this trial
+function placestim(n) {
+  tr_sttime=Date.now()-start;
+  optxt+="trial_start: "+tr_sttime+"\n";
+for(f in names.trialset[n].items) {
+	i=names.trialset[n].items[f].name;
+	eval(i).style.visibility="visible";
+  eval(i).setAttribute('posn', names.trialset[n].items[f].posn);
+  eval(i).style.left = names.trialset[n].items[f].xloc*wd+hoffset-eval(i).width/2+ "px";
+  eval(i).style.top = names.trialset[n].items[f].yloc*ht +voffset-eval(i).height/2+ "px";
+  //This is what tells us what number this stimulus is in the required order
+ }
+}
+
+//This is run when one of the animal circles is clicked
+//Checks whether correct, in which case colour changes and line is drawn to it
+function checkUpdate(stim){
+ console.log("checkupdate:" +targetposn);
+  if(["inst_z","inst_l","inst_b"].includes(stim)) {
+      eval(stim).style.visibility="hidden"; 
+      placestim(nf); 
+   } else if(["fb_z","fb_l"].includes(stim)) {
+     eval(stim).style.visibility="hidden"; 
+   //setTimeout(function() {init(nf)}, 1000);
+   init(nf);
+   } else if(stim=="fb_b") {
+    eval(stim).style.visibility="hidden";  
+    end();  
+    } else{
+    clickcount++;
+    thisposn=eval(stim).getAttribute("posn");
+    optxt+="click_item: "+stim+", ";    
+    optxt+="click_time: "+(Date.now()-start)+", ";
+    optxt+="click_correct: "+(thisposn==targetposn)+"\n";
+
+   //Draw the line between the two correct items
+    if(thisposn==targetposn) {
+        eval(stim).setAttribute('src', stim+'_s.png');
+     line_en_x=(eval(stim).getBoundingClientRect().left+eval(stim).getBoundingClientRect().right)/2;
+    line_en_y=(eval(stim).getBoundingClientRect().top+eval(stim).getBoundingClientRect().bottom)/2;
+        if(targetposn>1){
+            document.getElementById("lines").appendChild(createLine(line_st_x, line_st_y, line_en_x, line_en_y));
+        }
+     line_st_x=line_en_x;
+     line_st_y=line_en_y;
+     targetposn++;
+
+     if(targetposn==names.trialset[nf].items.length+1) {
+     	nf++; 
+     	targetposn=1; 
+    if(names.trialset[nf-1].hasOwnProperty('instructions')) {
+      if(names.trialset[nf-1].inst_time=="after") {
+        console.log("Show fb");
+         clearup();
+        i=names.trialset[nf-1].instructions;
+        eval(i).style.visibility="visible";
+          tmp_width=eval(i).width;
+    tmp_height=eval(i).height;
+    winit=window.innerWidth;
+    hinit=window.innerHeight;
+
+    tmp_l=(winit-tmp_width)/2;
+    tmp_t=(hinit-tmp_height)/2;
+    eval(i).style.left=tmp_l+ "px";
+    eval(i).style.top=tmp_t+ "px";
+    }
+    else if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
+      else {console.log("END");end();}
+}
+     else if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
+      else {console.log("END");end();}
+     }
+  
+}
+}
+}
+
+//End the study and save the data locally
+function end(){
+    createBalloons(30);
+
+    var a = document.createElement("a");
+    a.href = window.URL.createObjectURL(new Blob([optxt], {type: "text/plain"}));
+    a.download = inittime.toISOString()+".txt";
+    a.click(); 
+  }
+  
+
+// BELOW ARE FUNCTIONS FROM ELSEWHERE
+
+
+function createLineElement(x, y, length, angle) {
+    var line = document.createElement("div");
+    var styles = 'border: 1px solid green; '
+               + 'width: ' + length + 'px; '
+               + 'height: 0px; '
+               + '-moz-transform: rotate(' + angle + 'rad); '
+               + '-webkit-transform: rotate(' + angle + 'rad); '
+               + '-o-transform: rotate(' + angle + 'rad); '  
+               + '-ms-transform: rotate(' + angle + 'rad); '  
+               + 'position: absolute; '
+               + 'top: ' + y + 'px; '
+               + 'left: ' + x + 'px; ';
+    line.setAttribute('style', styles);  
+    return line;
+}
+
+function createLine(x1, y1, x2, y2) {
+    var a = x1 - x2,
+        b = y1 - y2,
+        c = Math.sqrt(a * a + b * b);
+    var sx = (x1 + x2) / 2,
+        sy = (y1 + y2) / 2;
+    var x = sx - c / 2,
+        y = sy;
+    var alpha = Math.PI - Math.atan2(-b, a);
+    return createLineElement(x, y, c, alpha);
+}
+
+
+function openFullscreen() {
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+  setTimeout(function() {goneFull()}, 1000);
+}
+
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
+  
+
+
+ 
+function preloadImages(e) {
+    console.log("preload images");
+   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+    for (var i = 0; i < pics.length; i++) {
+        var tempImage = new Image();
+        tempImage.src = pics[i]+"_ns.png";
+    }
+    for (var i = 0; i < pics.length; i++) {
+        var tempImage = new Image();
+        tempImage.src = pics[i]+"_s.png";
+    }
+    for (var i = 0; i < insts.length; i++) {
+    var tempImage = new Image();
+    tempImage.src = insts[i]+".png";
+    }
+}
+
 
 function random(num) {
   return Math.floor(Math.random()*num)
@@ -383,16 +464,16 @@ function getRandomStyles() {
   color: rgba(${r},${g},${b},0.7); 
   box-shadow: inset -7px -3px 10px rgba(${r-10},${g-10},${b-10},0.7);
   margin: ${mt}px 0 0 ${ml}px;
-  animation: float ${dur}s ease-in normal
+  animation: float ${dur}s ease-in infinite
   `
 }
 
 function createBalloons(num) {
-  var balloonContainer = document.getElementById("balloon-container")
+  var balloonContainer = document.getElementById("balloon-container");
   for (var i = num; i > 0; i--) {
   var balloon = document.createElement("div");
   balloon.className = "balloon";
-  balloon.style.cssText = getRandomStyles(); 
+  balloon.style.cssText = getRandomStyles();
   balloonContainer.append(balloon);
   }
 }
@@ -403,8 +484,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
 
-</script>
 
+</script>
 </body>
 </html>
-
