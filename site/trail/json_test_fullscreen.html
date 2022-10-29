@@ -10,6 +10,10 @@
       .overlays {position: absolute;}
 
 
+body {
+  margin: 0;
+}
+
 #everything {
    z-index: -3;
    width: 100%;  
@@ -21,17 +25,57 @@
       width: 100%;
    position: absolute;
 }
-#animals {
-     z-index: 1;
-   position: absolute;
-   width: 100%;
+
+
+#balloon-container {
+  height: 100vh;
+  padding: -0.5em;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
 }
 
-#instructions {
-     z-index: 5;
-   position: absolute;
-   width: 100%;
+.balloon {
+  height: 125px;
+  width: 105px;
+  border-radius: 75% 75% 70% 70%;
+  position: relative;
 }
+
+.balloon:before {
+  content: "";
+  height: 75px;
+  width: 1px;
+  padding: 1px;
+  background-color: #FDFD96;
+  display: block;
+  position: absolute;
+  top: 125px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.balloon:after {
+    content: "▲";
+    text-align: center;
+    display: block;
+    position: absolute;
+    color: inherit;
+    top: 120px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+@keyframes float {
+  from {transform: translateY(100vh);
+  opacity: 1;}
+  to {transform: translateY(-300vh);
+  opacity: 0;}
+}
+
 
 </style>
 
@@ -40,10 +84,9 @@
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="0" />
  <button id="button" onclick="openFullscreen();">Open Fullscreen</button>
+ <div id="balloon-container">
  <div id="lines">
- <div id="animals">
- <div id="instructions">
-</div>
+ 
 </div>
 </div>
 </div>
@@ -181,13 +224,14 @@ function loadImages() {
           checkUpdate(this.alt);
         }
       }
-      
+     
+
  }
 
 
-function init(n) {
+function clearup(){
 
-//Remove any lines from the previous trial
+    //Remove any lines from the previous trial
 const list = document.getElementById("lines");
 while (list.hasChildNodes()) {
   list.removeChild(list.firstChild);
@@ -195,15 +239,20 @@ while (list.hasChildNodes()) {
 
 //Hide all the animal circles and change them back to unselected
 for(f in pics) {
-	tp=pics[f];
-	eval(tp).style.visibility="hidden";
-	eval(tp).setAttribute('src', tp+'_ns.png');
-}	
+    tp=pics[f];
+    eval(tp).style.visibility="hidden";
+    eval(tp).setAttribute('src', tp+'_ns.png');
+}   
 
 for(f in insts) {
     tp=insts[f];
     eval(tp).style.visibility="hidden";
-}   
+}  
+}
+
+function init(n) {
+   
+ clearup();
 
 //Check from the JSON whether this trial has instructions
 //If so, show them
@@ -253,17 +302,22 @@ for(f in names.trialset[n].items) {
 //Checks whether correct, in which case colour changes and line is drawn to it
 function checkUpdate(stim){
  console.log("checkupdate:" +targetposn);
- if(["inst_z","inst_l","inst_b"].includes(stim)) {
-    eval(stim).style.visibility="hidden"; 
-    placestim(nf); }
- else{
+  if(["inst_z","inst_l","inst_b"].includes(stim)) {
+      eval(stim).style.visibility="hidden"; 
+      placestim(nf); 
+   } else if(["fb_z","fb_l"].includes(stim)) {
+     eval(stim).style.visibility="hidden"; 
+   //setTimeout(function() {init(nf)}, 1000);
+   init(nf);
+   } else if(stim=="fb_b") {
+    eval(stim).style.visibility="hidden";  
+    end();  
+    } else{
     clickcount++;
     thisposn=eval(stim).getAttribute("posn");
     optxt+="click_item: "+stim+", ";    
     optxt+="click_time: "+(Date.now()-start)+", ";
     optxt+="click_correct: "+(thisposn==targetposn)+"\n";
-
-    console.log(optxt);
 
    //Draw the line between the two correct items
     if(thisposn==targetposn) {
@@ -280,15 +334,37 @@ function checkUpdate(stim){
      if(targetposn==names.trialset[nf].items.length+1) {
      	nf++; 
      	targetposn=1; 
-      if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
+    if(names.trialset[nf-1].hasOwnProperty('instructions')) {
+      if(names.trialset[nf-1].inst_time=="after") {
+        console.log("Show fb");
+         clearup();
+        i=names.trialset[nf-1].instructions;
+        eval(i).style.visibility="visible";
+          tmp_width=eval(i).width;
+    tmp_height=eval(i).height;
+    winit=window.innerWidth;
+    hinit=window.innerHeight;
+
+    tmp_l=(winit-tmp_width)/2;
+    tmp_t=(hinit-tmp_height)/2;
+    eval(i).style.left=tmp_l+ "px";
+    eval(i).style.top=tmp_t+ "px";
+    }
+    else if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
+      else {console.log("END");end();}
+}
+     else if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
       else {console.log("END");end();}
      }
-  }
+  
+}
 }
 }
 
 //End the study and save the data locally
 function end(){
+    createBalloons(30);
+
     var a = document.createElement("a");
     a.href = window.URL.createObjectURL(new Blob([optxt], {type: "text/plain"}));
     a.download = inittime.toISOString()+".txt";
@@ -372,41 +448,42 @@ function preloadImages(e) {
 }
 
 
-function startdownload() {
-filearray=["trial.json"];
-download_files(filearray)
+function random(num) {
+  return Math.floor(Math.random()*num)
 }
 
-function download_files(files) {
-  function download_next(i) {
-    if (i >= files.length) {
-      return;
-    }
-    var a = document.createElement('a');
-    a.href = files[i].download;
-    a.target = '_parent';
-    // Use a.download if available, it prevents plugins from opening.
-    if ('download' in a) {
-      a.download = files[i].filename;
-    }
-    // Add a to the doc for click to work.
-    (document.body || document.documentElement).appendChild(a);
-    if (a.click) {
-      a.click(); // The click method is supported by most browsers.
-    } else {
-      $(a).click(); // Backup using jquery
-    }
-    // Delete the temporary link.
-    a.parentNode.removeChild(a);
-    // Download the next file with a small timeout. The timeout is necessary
-    // for IE, which will otherwise only download the first file.
-    setTimeout(function() {
-      download_next(i + 1);
-    }, 500);
-  }
-  // Initiate the first download.
-  download_next(0);
+function getRandomStyles() {
+  var r = random(255);
+  var g = random(255);
+  var b = random(255);
+  var mt = random(200);
+  var ml = random(50);
+  var dur = random(5)+5;
+  return `
+  background-color: rgba(${r},${g},${b},0.7);
+  color: rgba(${r},${g},${b},0.7); 
+  box-shadow: inset -7px -3px 10px rgba(${r-10},${g-10},${b-10},0.7);
+  margin: ${mt}px 0 0 ${ml}px;
+  animation: float ${dur}s ease-in infinite
+  `
 }
+
+function createBalloons(num) {
+  var balloonContainer = document.getElementById("balloon-container");
+  for (var i = num; i > 0; i--) {
+  var balloon = document.createElement("div");
+  balloon.className = "balloon";
+  balloon.style.cssText = getRandomStyles();
+  balloonContainer.append(balloon);
+  }
+}
+
+/* Balloon animation adapted from: Copyright (c) 2022 by Jemima (https://codepen.io/Jemimaabu/pen/vYEYdOy)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
+
 
 </script>
 </body>
