@@ -180,8 +180,6 @@ function goneFull() {
   hoffset=(window.innerWidth-background_png.width)/2;
   voffset=(window.innerHeight-background_png.height)/2;
   background_png.setAttribute('class', 'overlays');
-  console.log("Hoffset:"+hoffset);
-  console.log("Hinit:"+ hinit);
   background_png.style.left=hoffset+"px";
   background_png.style.top=voffset+"px";
 
@@ -329,7 +327,11 @@ function checkUpdate(stim){
     eval(stim).style.visibility="hidden";  
     end();  
     } else if(stim=="fb_e") {
-    eval(stim).style.visibility="hidden";  
+    eval(stim).style.visibility="hidden"; 
+    var a = document.createElement("a");
+    a.href = window.URL.createObjectURL(new Blob([optxt], {type: "text/plain"}));
+    a.download = "Data_"+inittime.toISOString()+".txt";
+    a.click();  
     closeFullscreen(); 
     } else{
     clickcount++;
@@ -396,10 +398,6 @@ function end(){
 
     createBalloons(30);
 
-    var a = document.createElement("a");
-    a.href = window.URL.createObjectURL(new Blob([optxt], {type: "text/plain"}));
-    a.download = "Demo.txt";
-    a.click(); 
   }
   
 
