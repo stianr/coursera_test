@@ -155,6 +155,7 @@ console.log("0.2 29/10/22 16:46");
   var fb_z = document.createElement("img");
   var fb_l = document.createElement("img");
   var fb_b = document.createElement("img");
+  var fb_e = document.createElement("img");
 
   var tr_sttime=Date.now();
   var targetposn=1;
@@ -196,7 +197,7 @@ function goneFull() {
 loadNames()
 .then(function(n) {
 tottrial=names.trialset.length;
- //init(nf);
+init(nf);
 })
 loadImages();
 
@@ -463,7 +464,7 @@ function closeFullscreen() {
 function preloadImages(e) {
     console.log("preload images");
    const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
-  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b", "fb_e"];
     for (var i = 0; i < pics.length; i++) {
         var tempImage = new Image();
         tempImage.src = pics[i]+"_ns.png";
