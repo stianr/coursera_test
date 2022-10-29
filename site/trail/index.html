@@ -7,7 +7,7 @@
 	<title>Jungle Friends</title>
 	<style>
       * { padding: 0; margin: 0; }
-      .overlays {position: absolute;}
+      .overlays {position: absolute; padding: 0; margin: 0; }
 
 
 body {
@@ -15,6 +15,7 @@ body {
 }
 
 #everything {
+   margin: 0;
    z-index: -3;
    width: 100%;  
    
@@ -22,15 +23,14 @@ body {
 
 #lines {
    z-index: 0;
-   margin-top: -2.5%;
-      width: 100%;
+   width: 100%;
    position: absolute;
 }
 
 
 #balloon-container {
   height: 100vh;
-  padding: -0.5em;
+  padding: 0em;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -97,10 +97,9 @@ button:hover {
 <body>
  <div id="everything"> 
  <img id="background_png" src="jungle.png" width="0" />
- <button id="button" onclick="openFullscreen();">Open Fullscreen</button>
  <div id="balloon-container">
  <div id="lines">
- 
+  <button id="button" onclick="openFullscreen();">Open Fullscreen</button>
 </div>
 </div>
 </div>
