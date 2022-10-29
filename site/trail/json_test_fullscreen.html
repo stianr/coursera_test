@@ -76,10 +76,10 @@ console.log("0.2 28/10/22 17:56");
   var names=null;
   var nf = 0;
   var tottrial=0;
-   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
- const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
- var wd=0;
- var ht=0;
+  const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+  var wd=0;
+  var ht=0;
 
   var i_1a = document.createElement("img");
   var i_1b = document.createElement("img");
@@ -97,10 +97,11 @@ console.log("0.2 28/10/22 17:56");
   var fb_z = document.createElement("img");
   var fb_l = document.createElement("img");
   var fb_b = document.createElement("img");
-    var targetposn=1;
+  var targetposn=1;
 
-    var elem = document.documentElement;
+  var elem = document.documentElement;
 
+//Run once gone fullscreen to adapt display parameters to the individual screen
 function goneFull() {
   if(winit/2560 > hinit/1440) {
   background_png.height=0.99*window.innerHeight;
@@ -121,14 +122,14 @@ function goneFull() {
   background_png.style.left=hoffset+"px";
   background_png.style.top=voffset+"px";
 
-h=hoffset;
-v=voffset;
+  h=hoffset;
+  v=voffset;
   wd=background_png.width;
   ht=background_png.height;
 
 
 
-  loadNames()
+loadNames()
 .then(function(n) {
 tottrial=names.trialset.length;
   init(nf);})
@@ -171,29 +172,27 @@ function loadImages() {
         }
       }
       */
-
-
-      
-
  }
 
 
 function init(n) {
 
-console.log("NXT: "+n);
+//Remove any lines from the previous trial
 const list = document.getElementById("lines");
 while (list.hasChildNodes()) {
   list.removeChild(list.firstChild);
 }
 
-
+//Hide all the animal circles and change them back to unselected
 for(f in pics) {
 	tp=pics[f];
 	eval(tp).style.visibility="hidden";
 	eval(tp).setAttribute('src', tp+'_ns.png');
 }	
 
-  console.log("INIT: "+n);
+//Check from the JSON whether this trial has instructions
+//If so, show them
+//Currently doesn't display them so goes straight on to trial
 if(names.trialset[n].hasOwnProperty('instructions')) {
   console.log("NEEDS INSTRUCTIONS");
   if(names.trialset[n].inst_time=="before") {
@@ -210,6 +209,7 @@ else {placestim(n);
 }
 }
 
+//Put the animals in the correct position for this trial
 function placestim(n) {
   console.log("PLACING");
 for(f in names.trialset[n].items) {
@@ -221,17 +221,11 @@ for(f in names.trialset[n].items) {
   //This is what tells us what number this stimulus is in the required order
   console.log(i+ " : " +  names.trialset[n].items[f].posn );
   console.log(eval(i).width);
-}
-//This trial, get what needs to be on the screen
-//for (f in names.trialset.trialnumber[n].items){
-//console.log(f);
-//}
+ }
 }
 
-
-
-
-
+//This is run when one of the animal circles is clicked
+//Checks whether correct, in which case colour changes and line is drawn to it
 function checkUpdate(stim){
  console.log("checkupdate:" +targetposn);
     clickcount++;
@@ -251,17 +245,13 @@ function checkUpdate(stim){
      if(targetposn==names.trialset[nf].items.length+1) {
      	nf++; 
      	targetposn=1; 
-    
       if(nf<tottrial){setTimeout(function() {init(nf)}, 1000);}
       else {console.log("END");end();}
-   }
-  
-    }
-    console.log(thisposn);
-
+     }
   }
+}
 
-
+//End the study and save the data locally
 function end(){
     var a = document.createElement("a");
     a.href = window.URL.createObjectURL(new Blob(["CONTENT"], {type: "text/plain"}));
@@ -270,7 +260,7 @@ function end(){
   }
 
 
-
+// BELOW ARE FUNCTIONS FROM ELSEWHERE
 
 
 function createLineElement(x, y, length, angle) {
@@ -293,18 +283,13 @@ function createLine(x1, y1, x2, y2) {
     var a = x1 - x2,
         b = y1 - y2,
         c = Math.sqrt(a * a + b * b);
-
     var sx = (x1 + x2) / 2,
         sy = (y1 + y2) / 2;
-
     var x = sx - c / 2,
         y = sy;
-
     var alpha = Math.PI - Math.atan2(-b, a);
-
     return createLineElement(x, y, c, alpha);
 }
-
 
 
 function openFullscreen() {
