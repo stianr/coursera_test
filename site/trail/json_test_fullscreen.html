@@ -105,6 +105,7 @@ console.log("0.2 29/10/22 12:56");
 
   var elem = document.documentElement;
   var start = Date.now(); 
+  this.addEventListener("DOMContentLoaded", preloadImages, true);
 
 //Run once gone fullscreen to adapt display parameters to the individual screen
 function goneFull() {
@@ -269,7 +270,7 @@ function checkUpdate(stim){
     if(thisposn==targetposn) {
         eval(stim).setAttribute('src', stim+'_s.png');
      line_en_x=(eval(stim).getBoundingClientRect().left+eval(stim).getBoundingClientRect().right)/2;
-     line_en_y=(eval(stim).getBoundingClientRect().top+eval(stim).getBoundingClientRect().bottom)/2;
+    line_en_y=(eval(stim).getBoundingClientRect().top+eval(stim).getBoundingClientRect().bottom)/2;
         if(targetposn>1){
             document.getElementById("lines").appendChild(createLine(line_st_x, line_st_y, line_en_x, line_en_y));
         }
@@ -349,6 +350,27 @@ function closeFullscreen() {
   }
 }
   
+
+
+ 
+function preloadImages(e) {
+    console.log("preload images");
+   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
+  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b"];
+    for (var i = 0; i < pics.length; i++) {
+        var tempImage = new Image();
+        tempImage.src = pics[i]+"_ns.png";
+    }
+    for (var i = 0; i < pics.length; i++) {
+        var tempImage = new Image();
+        tempImage.src = pics[i]+"_s.png";
+    }
+    for (var i = 0; i < insts.length; i++) {
+    var tempImage = new Image();
+    tempImage.src = insts[i]+".png";
+    }
+}
+
 </script>
 </body>
 </html>
