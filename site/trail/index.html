@@ -161,11 +161,11 @@ console.log("0.2 29/10/22 17:46");
 
   var elem = document.documentElement;
   var start = Date.now(); 
-  this.addEventListener("DOMContentLoaded", preloadImages, true);
-
+  //this.addEventListener("DOMContentLoaded", preloadImages, true);
+  preloadImages();
 //Run once gone fullscreen to adapt display parameters to the individual screen
 function goneFull() {
-  
+
   winit=window.innerWidth;
   hinit=window.innerHeight;
   if(winit/2560 > hinit/1440) {
@@ -183,6 +183,7 @@ function goneFull() {
   background_png.style.left=hoffset+"px";
   background_png.style.top=voffset+"px";
 
+
   h=hoffset;
   v=voffset;
   wd=background_png.width;
@@ -194,9 +195,10 @@ function goneFull() {
 loadNames()
 .then(function(n) {
 tottrial=names.trialset.length;
+  loadImages();
 init(nf);
 })
-loadImages();
+
 
 
 }
@@ -460,8 +462,7 @@ function closeFullscreen() {
  
 function preloadImages(e) {
     console.log("preload images");
-   const pics = ["i_1a","i_1b","i_2a","i_2b","i_3a","i_3b","i_4a","i_4b"];
-  const insts = ["inst_z", "inst_l", "inst_b", "fb_z", "fb_l", "fb_b", "fb_e"];
+
     for (var i = 0; i < pics.length; i++) {
         var tempImage = new Image();
         tempImage.src = pics[i]+"_ns.png";
@@ -474,6 +475,7 @@ function preloadImages(e) {
     var tempImage = new Image();
     tempImage.src = insts[i]+".png";
     }
+
 }
 
 
