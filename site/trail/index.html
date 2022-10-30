@@ -243,11 +243,15 @@ function loadImages() {
 
  for(f in insts){
         tp=insts[f];
+        console.log("adding:" + tp);
         eval(tp).setAttribute('src', tp+'.png');
         eval(tp).setAttribute('class', 'overlays');
-        eval(tp).width=eval(tp).width;
-        eval(tp).height=eval(tp).height;
+    //    eval(tp).width=eval(tp).width;
+    //    eval(tp).height=eval(tp).height;
+    //     eval(tp).width=100;
+         eval(tp).height=100;
         eval(tp).alt=tp;
+       eval(tp).style.top="500px";
         eval(tp).setAttribute('posn', 0);
     //    document.getElementById("lines").appendChild(eval(tp));
         document.body.appendChild(eval(tp));
@@ -302,8 +306,8 @@ function resize() {
         multi1=1;
         multi2=1;
 
-        if(eval(tp).width>0.8*window.wd){multi1=0.8*window.wd/eval(tp).width}
-        if(eval(tp).height>0.8*window.ht){multi2=0.8*window.ht/eval(tp).height}
+        multi1=0.8*window.wd/eval(tp).width
+        multi2=0.8*window.ht/eval(tp).height
 
         finmulti=Math.min(multi1,multi2);
         console.log("fin: "+finmulti);
