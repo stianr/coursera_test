@@ -1,0 +1,95 @@
+{
+"trialset":[
+  {"trialnumber": 1,
+  "trialtype": "single_A",
+  "instructions": "inst_l",
+  "inst_time": "before",
+  "items":[ 
+    {"name": "j_1a", "xloc": 0.3, "yloc": 0.8, "posn": "1"},
+    {"name": "j_2a", "xloc": 0.7, "yloc": 0.5, "posn": "2"}
+  ]},
+   {
+  "trialnumber": 2,
+  "trialtype": "single_A",
+  "items":[ 
+    {"name": "j_1a", "xloc": 0.2, "yloc": 0.2, "posn": "1"},
+    {"name": "j_2a", "xloc": 0.7, "yloc": 0.4, "posn": "2"},
+    {"name": "j_3a", "xloc": 0.4, "yloc": 0.6, "posn": "3"}
+    ]},
+     {
+  "trialnumber": 3,
+  "trialtype": "single_A",
+  "instructions": "fb_l",
+  "inst_time": "after",
+  "items":[ 
+    {"name": "j_1a", "xloc": 0.8, "yloc": 0.3, "posn": "1"},
+    {"name": "j_2a", "xloc": 0.3, "yloc": 0.2, "posn": "2"},
+    {"name": "j_3a", "xloc": 0.4, "yloc": 0.7, "posn": "3"},
+    {"name": "j_4a", "xloc": 0.2, "yloc": 0.8, "posn": "4"}
+    ]},
+  {"trialnumber": 4,
+  "trialtype": "single_B",
+  "instructions": "inst_z",
+  "inst_time": "before",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.6, "yloc": 0.3, "posn": "1"},
+    {"name": "j_2b", "xloc": 0.3, "yloc": 0.7, "posn": "2"}
+  ]},
+   {
+  "trialnumber": 5,
+  "trialtype": "single_B",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.8, "yloc": 0.5, "posn": "1"},
+    {"name": "j_2b", "xloc": 0.5, "yloc": 0.2, "posn": "2"},
+    {"name": "j_3b", "xloc": 0.7, "yloc": 0.7, "posn": "3"}
+    ]},
+     {
+  "trialnumber": 6,
+  "trialtype": "single_B",
+  "instructions": "fb_z",
+  "inst_time": "after",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.3, "yloc": 0.2, "posn": "1"},
+    {"name": "j_2b", "xloc": 0.2, "yloc": 0.7, "posn": "2"},
+    {"name": "j_3b", "xloc": 0.5, "yloc": 0.5, "posn": "3"},
+    {"name": "j_4b", "xloc": 0.9, "yloc": 0.6, "posn": "4"}
+    ]},
+     {
+  "trialnumber": 7,
+  "trialtype": "Dual",
+  "instructions": "inst_b",
+  "inst_time": "before",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.4, "yloc": 0.5, "posn": "1"},
+    {"name": "j_1a", "xloc": 0.2, "yloc": 0.8, "posn": "2"},
+    {"name": "j_2b", "xloc": 0.3, "yloc": 0.2, "posn": "3"},
+    {"name": "j_2a", "xloc": 0.8, "yloc": 0.3, "posn": "4"}
+    ]},
+     {
+  "trialnumber": 8,
+  "trialtype": "Dual",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.7, "yloc": 0.7, "posn": "1"},
+    {"name": "j_1a", "xloc": 0.5, "yloc": 0.5, "posn": "2"},
+    {"name": "j_2b", "xloc": 0.5, "yloc": 0.8, "posn": "3"},
+    {"name": "j_2a", "xloc": 0.2, "yloc": 0.8, "posn": "4"},
+    {"name": "j_3b", "xloc": 0.3, "yloc": 0.2, "posn": "5"},
+    {"name": "j_3a", "xloc": 0.8, "yloc": 0.3, "posn": "6"}
+    ]},
+     {
+  "trialnumber": 9,
+  "trialtype": "Dual",
+  "instructions": "fb_b",
+  "inst_time": "after",
+  "items":[ 
+    {"name": "j_1b", "xloc": 0.2, "yloc": 0.5, "posn": "1"},
+    {"name": "j_1a", "xloc": 0.5, "yloc": 0.7, "posn": "2"},
+    {"name": "j_2b", "xloc": 0.3, "yloc": 0.4, "posn": "3"},
+    {"name": "j_2a", "xloc": 0.6, "yloc": 0.2, "posn": "4"},
+    {"name": "j_3b", "xloc": 0.8, "yloc": 0.4, "posn": "5"},
+    {"name": "j_3a", "xloc": 0.75, "yloc": 0.8, "posn": "6"},
+    {"name": "j_4b", "xloc": 0.4, "yloc": 0.8, "posn": "7"},
+    {"name": "j_4a", "xloc": 0.2, "yloc": 0.7, "posn": "8"}  
+    ]}
+  ]
+}
