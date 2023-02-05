@@ -20,7 +20,8 @@
 </div>
 
  <script>
-  var trials = '{"trials":[{"subtrials":"1","tasks":[{"l":"s1","m":"s1","r":"s2"}]},{"subtrials":"2","tasks":[{"l":"s3","m":"s4","r":"s3"},{"l":"s5","m":"s6","r":"s6"}]}]}';
+  //This is a standard JSON format file - can be read in but hard coded here
+  var trials = '{"trials":[{"subtrials":"1","tasks":[{"l":"s1","m":"s1","r":"s2"}]},{"subtrials":"2","tasks":[{"l":"s3","m":"s4","r":"s3"},{"l":"s5","m":"s6","r":"s6"}]},{"subtrials":"2","tasks":[{"l":"s3","m":"s4","r":"s3"},{"l":"s5","m":"s6","r":"s6"}]}]}';
   const obj = JSON.parse(trials);
   console.log("JSON"+obj.trials[0].tasks[0].l);
   var winit=window.innerWidth;
@@ -33,7 +34,7 @@
   var resp1=0;
   var resp2=0;
   var resp3=0;
-  var totaltrials=2;
+  var totaltrials=3;
   if(winit/2560 > hinit/1440) {
   background_png.height=0.99*window.innerHeight;
   background_png.width=0.99*(window.innerHeight/1440)*2560;

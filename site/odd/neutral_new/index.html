@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap" rel="stylesheet"> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+ <title>Space Demo</title>
+ <style>
+ * { padding: 0; margin: 0; }
+      .overlays {position: absolute;}
+
+    </style>
+</head>
+<body>
+  <img id="background_png" src="space.png" width="500" />
+<div id="container" style="width:100%;">
+</div>
+
+ <script>
+
+  //INIT EVERYTHING
+  var trials = '{"trials":[{"subtrials":"1s"},{"subtrials":"p"},{"subtrials":"1","tasks":[{"l":"s2","m":"s1","r":"s2","c":"2"}]},{"subtrials":"1","tasks":[{"l":"s4","m":"s4","r":"s3","c":"3"}]},{"subtrials":"m"},{"subtrials":"1","tasks":[{"l":"s13","m":"s14","r":"s13","c":"2"}]},{"subtrials":"1","tasks":[{"l":"s16","m":"s15","r":"s15","c":"1"}]},{"subtrials":"1","tasks":[{"l":"s18","m":"s18","r":"s17","c":"3"}]},{"subtrials":"1","tasks":[{"l":"s19","m":"s19","r":"s20","c":"3"}]},{"subtrials":"1","tasks":[{"l":"s21","m":"s22","r":"s22","c":"1"}]},{"subtrials":"1","tasks":[{"l":"s24","m":"s23","r":"s24","c":"2"}]},{"subtrials":"2s"},{"subtrials":"p"},{"subtrials":"2","tasks":[{"l":"s5","m":"s6","r":"s6","c":"1"},{"l":"s7","m":"s7","r":"s8","c":"3"}]},{"subtrials":"2","tasks":[{"l":"s9","m":"s10","r":"s9","c":"2"},{"l":"s11","m":"s12","r":"s12","c":"1"}]},{"subtrials":"m"},{"subtrials":"2","tasks":[{"l":"s26","m":"s25","r":"s25","c":"1"},{"l":"s27","m":"s28","r":"s28","c":"1"}]},{"subtrials":"2","tasks":[{"l":"s29","m":"s29","r":"s30","c":"3"},{"l":"s32","m":"s31","r":"s32","c":"2"}]},{"subtrials":"2","tasks":[{"l":"s34","m":"s33","r":"s33","c":"1"},{"l":"s36","m":"s36","r":"s35","c":"3"}]},{"subtrials":"2","tasks":[{"l":"s37","m":"s38","r":"s37","c":"2"},{"l":"s40","m":"s39","r":"s40","c":"2"}]},{"subtrials":"2","tasks":[{"l":"s41","m":"s41","r":"s42","c":"3"},{"l":"s44","m":"s43","r":"s43","c":"1"}]},{"subtrials":"2","tasks":[{"l":"s46","m":"s45","r":"s46","c":"2"},{"l":"s48","m":"s48","r":"s47","c":"3"}]},{"subtrials":"3s"},{"subtrials":"3","tasks":[{"l":"s49","m":"s50","r":"s49","c":"2"},{"l":"s51","m":"s52","r":"s52","c":"1"},{"l":"s54","m":"s53","r":"s53","c":"1"}]},{"subtrials":"3","tasks":[{"l":"s56","m":"s56","r":"s55","c":"3"},{"l":"s58","m":"s57","r":"s57","c":"1"},{"l":"s59","m":"s59","r":"s60","c":"3"}]},{"subtrials":"3","tasks":[{"l":"s61","m":"s62","r":"s61","c":"2"},{"l":"s64","m":"s64","r":"s63","c":"3"},{"l":"s65","m":"s65","r":"s66","c":"3"}]},{"subtrials":"3","tasks":[{"l":"s67","m":"s68","r":"s68","c":"1"},{"l":"s70","m":"s69","r":"s70","c":"2"},{"l":"s71","m":"s72","r":"s72","c":"1"}]},{"subtrials":"3","tasks":[{"l":"s74","m":"s73","r":"s73","c":"1"},{"l":"s75","m":"s75","r":"s76","c":"3"},{"l":"s78","m":"s77","r":"s78","c":"2"}]},{"subtrials":"3","tasks":[{"l":"s80","m":"s80","r":"s79","c":"3"},{"l":"s81","m":"s82","r":"s81","c":"2"},{"l":"s83","m":"s84","r":"s83","c":"2"}]},{"subtrials":"e"}]}';
+  const obj = JSON.parse(trials);
+
+  var winit=window.innerWidth;
+  var hinit=window.innerHeight;
+  var allow=1;
+  var hoffset=0;
+  var voffset=0;
+  var trialno=0;
+  var subtrialssofar=-1;
+  var resp1=0;
+  var resp2=0;
+  var resp3=0;
+  var totaltrials=3;
+  if(winit/2560 > hinit/1440) {
+  background_png.height=0.99*window.innerHeight;
+  background_png.width=0.99*(window.innerHeight/1440)*2560;
+
+
+  } else {
+  background_png.width=0.99*window.innerWidth;
+  background_png.height=0.99*(window.innerWidth/2560)*1440;
+  }
+  hoffset=(window.innerWidth-background_png.width)/2;
+  voffset=(window.innerHeight-background_png.height)/2;
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
+  var feedback_voffset=(window.innerHeight-412)/2;
+  container.style.top=feedback_voffset+"px";
+  background_png.setAttribute('class', 'overlays');
+  console.log(hoffset);
+  background_png.style.left=hoffset+"px";
+  background_png.style.top=voffset+"px";
+  var corrtemp1=0;
+  var corrtemp2=0;
+  var corrtemp3=0;
+  var corrtot=0;
+  var corrchoice1=0;
+  var corrchoice2=0;
+  var corrchoice3=0;
+
+ var wd=background_png.width;
+
+//One-time creation of stimuli - all hidden
+        
+        var i_1a = document.createElement("img");
+        i_1a.setAttribute('src', 'bl_u.png');
+        i_1a.setAttribute('class', 'overlays');
+        i_1a.width=window.wd/6;
+        i_1a.style.left = 0.1*wd+hoffset+ "px";
+        i_1a.style.top = 0.22*wd +voffset+ "px";
+        i_1a.style.visibility='hidden';
+        document.body.appendChild(i_1a);
+        i_1a.onclick=function() {
+          checkUpdate("1a");
+        }
+
+        var i_1b = document.createElement("img");
+        i_1b.setAttribute('src', 'bl_u.png');
+        i_1b.setAttribute('class', 'overlays');
+        i_1b.width=window.wd/6;
+        i_1b.style.left = 0.4*wd+hoffset+ "px";
+        i_1b.style.top = 0.22*wd +voffset+ "px";
+        i_1b.style.visibility='hidden';
+        document.body.appendChild(i_1b);
+        i_1b.onclick=function() {
+          checkUpdate("1b");
+        }
+        var i_1c = document.createElement("img");
+        i_1c.setAttribute('src', 'bl_u.png');
+        i_1c.setAttribute('class', 'overlays');
+        i_1c.width=window.wd/6;
+        i_1c.style.left = 0.7*wd+hoffset+ "px";
+        i_1c.style.top = 0.22*wd +voffset+ "px";
+        i_1c.style.visibility='hidden';
+        document.body.appendChild(i_1c);
+        i_1c.onclick=function() {
+          checkUpdate("1c");
+        }
+
+
+        var i_2a = document.createElement("img");
+        i_2a.setAttribute('src', 's1_u.png');
+        i_2a.setAttribute('class', 'overlays');
+        i_2a.width=window.wd/6;
+        i_2a.style.left = 0.1*wd+hoffset+ "px";
+        i_2a.style.top = 0.05*wd +voffset+ "px";
+        i_2a.style.visibility='hidden';
+        document.body.appendChild(i_2a);
+        i_2a.onclick=function() {
+          checkUpdate("2a");
+        }
+
+        var i_2b = document.createElement("img");
+        i_2b.setAttribute('src', 's1_u.png');
+        i_2b.setAttribute('class', 'overlays');
+        i_2b.width=window.wd/6;
+        i_2b.style.left = 0.4*wd+hoffset+ "px";
+        i_2b.style.top = 0.05*wd +voffset+ "px";
+        i_2b.style.visibility='hidden';
+        document.body.appendChild(i_2b);
+        i_2b.onclick=function() {
+          checkUpdate("2b");
+        }
+        var i_2c = document.createElement("img");
+        i_2c.setAttribute('src', 's2_u.png');
+        i_2c.setAttribute('class', 'overlays');
+        i_2c.width=window.wd/6;
+        i_2c.style.left = 0.7*wd+hoffset+ "px";
+        i_2c.style.top = 0.05*wd +voffset+ "px";
+        i_2c.style.visibility='hidden';
+        document.body.appendChild(i_2c);
+        i_2c.onclick=function() {
+          checkUpdate("2c");
+        }
+
+        var i_0a = document.createElement("img");
+        i_0a.setAttribute('src', 'bl_u.png');
+        i_0a.setAttribute('class', 'overlays');
+        i_0a.width=window.wd/6;
+        i_0a.style.left = 0.1*wd+hoffset+ "px";
+        i_0a.style.top = 0.05*wd +voffset+ "px";
+        i_0a.style.visibility='hidden';
+        document.body.appendChild(i_0a);
+        i_0a.onclick=function() {
+          checkUpdate("0a");
+        }
+
+        var i_0b = document.createElement("img");
+        i_0b.setAttribute('src', 'bl_u.png');
+        i_0b.setAttribute('class', 'overlays');
+        i_0b.width=window.wd/6;
+        i_0b.style.left = 0.4*wd+hoffset+ "px";
+        i_0b.style.top = 0.05*wd +voffset+ "px";
+        i_0b.style.visibility='hidden';
+        document.body.appendChild(i_0b);
+        i_0b.onclick=function() {
+          checkUpdate("0b");
+        }
+        var i_0c = document.createElement("img");
+        i_0c.setAttribute('src', 'bl_u.png');
+        i_0c.setAttribute('class', 'overlays');
+        i_0c.width=window.wd/6;
+        i_0c.style.left = 0.7*wd+hoffset+ "px";
+        i_0c.style.top = 0.05*wd +voffset+ "px";
+        i_0c.style.visibility='hidden';
+        document.body.appendChild(i_0c);
+        i_0c.onclick=function() {
+          checkUpdate("0c");
+        }
+        var i_0d = document.createElement("img");
+        i_0d.setAttribute('src', 'bl_u.png');
+        i_0d.setAttribute('class', 'overlays');
+        i_0d.width=window.wd/6;
+        i_0d.style.left = 0.1*wd+hoffset+ "px";
+        i_0d.style.top = 0.05*wd +voffset+ "px";
+        i_0d.style.visibility='hidden';
+        document.body.appendChild(i_0d);
+        i_0d.onclick=function() {
+          checkUpdate("0d");
+        }
+
+        var i_0e = document.createElement("img");
+        i_0e.setAttribute('src', 'bl_u.png');
+        i_0e.setAttribute('class', 'overlays');
+        i_0e.width=window.wd/6;
+        i_0e.style.left = 0.4*wd+hoffset+ "px";
+        i_0e.style.top = 0.05*wd +voffset+ "px";
+        i_0e.style.visibility='hidden';
+        document.body.appendChild(i_0e);
+        i_0e.onclick=function() {
+          checkUpdate("0e");
+        }
+        var i_0f = document.createElement("img");
+        i_0f.setAttribute('src', 'bl_u.png');
+        i_0f.setAttribute('class', 'overlays');
+        i_0f.width=window.wd/6;
+        i_0f.style.left = 0.7*wd+hoffset+ "px";
+        i_0f.style.top = 0.05*wd +voffset+ "px";
+        i_0f.style.visibility='hidden';
+        document.body.appendChild(i_0f);
+        i_0f.onclick=function() {
+          checkUpdate("0f");
+        }
+
+        var i_0g = document.createElement("img");
+        i_0g.setAttribute('src', 'bl_u.png');
+        i_0g.setAttribute('class', 'overlays');
+        i_0g.width=window.wd/6;
+        i_0g.style.left = 0.1*wd+hoffset+ "px";
+        i_0g.style.top = 0.05*wd +voffset+ "px";
+        i_0g.style.visibility='hidden';
+        document.body.appendChild(i_0g);
+        i_0g.onclick=function() {
+          checkUpdate("0g");
+        }
+
+        var i_0h = document.createElement("img");
+        i_0h.setAttribute('src', 'bl_u.png');
+        i_0h.setAttribute('class', 'overlays');
+        i_0h.width=window.wd/6;
+        i_0h.style.left = 0.4*wd+hoffset+ "px";
+        i_0h.style.top = 0.05*wd +voffset+ "px";
+        i_0h.style.visibility='hidden';
+        document.body.appendChild(i_0h);
+        i_0h.onclick=function() {
+          checkUpdate("0h");
+        }
+
+        var i_0i = document.createElement("img");
+        i_0i.setAttribute('src', 'bl_u.png');
+        i_0i.setAttribute('class', 'overlays');
+        i_0i.width=window.wd/6;
+        i_0i.style.left = 0.7*wd+hoffset+ "px";
+        i_0i.style.top = 0.05*wd +voffset+ "px";
+        i_0i.style.visibility='hidden';
+        document.body.appendChild(i_0i);
+        i_0i.onclick=function() {
+          checkUpdate("0i");
+        }
+
+
+        var fb = document.createElement("img");
+        fb.setAttribute('src', 'feedback_space.png');
+        fb.setAttribute('class', 'overlays');
+        fb.width=window.wd/2;
+        fb.style.left = 0.25*wd+hoffset+ "px";
+        fb.style.top = 0.1*wd +voffset+ "px";
+        fb.style.visibility='hidden';
+        document.body.appendChild(fb);
+
+
+        var practice = document.createElement("img");
+        practice.setAttribute('src', 'practice.png');
+        practice.setAttribute('class', 'overlays');
+        practice.width=window.wd/2;
+        practice.style.left = 0.25*wd+hoffset+ "px";
+        practice.style.top = 0.1*wd +voffset+ "px";
+        practice.style.visibility='hidden';
+        document.body.appendChild(practice);
+        practice.onclick=function() {
+          checkUpdate("NT");
+        }
+
+        var real1 = document.createElement("img");
+        real1.setAttribute('src', 'real1.png');
+        real1.setAttribute('class', 'overlays');
+        real1.width=window.wd/2;
+        real1.style.left = 0.25*wd+hoffset+ "px";
+        real1.style.top = 0.1*wd +voffset+ "px";
+        real1.style.visibility='hidden';
+        document.body.appendChild(real1);
+        real1.onclick=function() {
+          checkUpdate("NT");
+        }
+
+        var real3 = document.createElement("img");
+        real3.setAttribute('src', 'real3.png');
+        real3.setAttribute('class', 'overlays');
+        real3.width=window.wd/2;
+        real3.style.left = 0.25*wd+hoffset+ "px";
+        real3.style.top = 0.1*wd +voffset+ "px";
+        real3.style.visibility='hidden';
+        document.body.appendChild(real3);
+        real3.onclick=function() {
+          checkUpdate("NT");
+        }
+
+        var real2 = document.createElement("img");
+        real2.setAttribute('src', 'real2.png');
+        real2.setAttribute('class', 'overlays');
+        real2.width=window.wd/2;
+        real2.style.left = 0.25*wd+hoffset+ "px";
+        real2.style.top = 0.1*wd +voffset+ "px";
+        real2.style.visibility='hidden';
+        document.body.appendChild(real2);
+        real2.onclick=function() {
+          checkUpdate("NT");
+        }
+
+        var main = document.createElement("img");
+        main.setAttribute('src', 'main.png');
+        main.setAttribute('class', 'overlays');
+        main.width=window.wd/2;
+        main.style.left = 0.25*wd+hoffset+ "px";
+        main.style.top = 0.1*wd +voffset+ "px";
+        main.style.visibility='hidden';
+        document.body.appendChild(main);
+        main.onclick=function() {
+          checkUpdate("NT");
+        }
+
+trialno=-1;
+nt=setInterval(nextTrial,100);
+
+//This function decides what the next trial should be - stimuli or instructions or end
+function nextTrial() {
+  clearInterval(nt);
+  console.log("Starting Trial");
+  trialno++;
+  subtrialssofar=-1;
+  if(obj.trials[trialno].subtrials=="p") {console.log("Practice"); practice_s();}
+  else if(obj.trials[trialno].subtrials=="e") {console.log("End"); end();}
+  else if(obj.trials[trialno].subtrials=="1s") {console.log("1s"); one_set();}
+  else if(obj.trials[trialno].subtrials=="2s") {console.log("2s"); two_sets();}
+  else if(obj.trials[trialno].subtrials=="3s") {console.log("3s"); three_sets();}
+  else if(obj.trials[trialno].subtrials=="m") {console.log("m"); main_s();}
+  else {
+  newTrial();
+}
+
+}
+
+
+function practice_s() {
+ practice.style.visibility='visible'; 
+}
+
+function one_set() {
+ real1.style.visibility='visible'; 
+}
+
+function two_sets() {
+  console.log("corrtot: "+corrtot);
+ if(corrtot<4) {end();}
+ else{
+ real2.style.visibility='visible'; 
+}
+}
+
+function three_sets() {
+ if(corrtot<4) {end();}
+ else{
+  corrtot=0;
+ real3.style.visibility='visible'; 
+} 
+}
+
+function main_s() {
+corrtot=0;
+ main.style.visibility='visible'; 
+}
+
+function end() {
+ fb.style.visibility='visible'; 
+}
+
+function newTrial(){
+subtrialssofar++;
+console.log("subt"+subtrialssofar+" corr:"+corrtemp1);
+if(subtrialssofar==0) {corrtemp1=obj.trials[trialno].tasks[subtrialssofar].c};
+if(subtrialssofar==1) {corrtemp2=obj.trials[trialno].tasks[subtrialssofar].c};
+if(subtrialssofar==2) {corrtemp3=obj.trials[trialno].tasks[subtrialssofar].c};
+  i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].r+'_u.png');
+
+  i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].r+'_u.png');
+  corrtemp=obj.trials[trialno].tasks[subtrialssofar].c;
+allow=1;
+st=setInterval(showTrial,1500);
+}
+
+function showTrial(){
+  clearInterval(st);
+  console.log("Show Trial")
+  i_1a.style.visibility='visible';
+  i_1b.style.visibility='visible';
+  i_1c.style.visibility='visible';
+}
+
+
+function checkUpdate(clicked){
+    console.log("ALLOW: "+allow);
+  if(clicked=="NT"){ 
+  practice.style.visibility='hidden';  
+  real1.style.visibility='hidden'; 
+  real2.style.visibility='hidden'; 
+  real3.style.visibility='hidden'; 
+  main.style.visibility='hidden'; 
+
+  nextTrial();}
+  else if(allow==1){
+    if(clicked=="1a"){
+      i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].l+'_s.png');
+    }
+    if(clicked=="1b"){
+      i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].m+'_s.png');
+    }
+    if(clicked=="1c"){
+      i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar].r+'_s.png');
+    }
+    allow=0;
+    console.log("Subtrials: "+obj.trials[trialno].subtrials);
+    console.log("Subtrialssofar: "+subtrialssofar);
+
+    gr=setInterval(getresp1, 1000);
+  }
+else if(allow==2){
+  console.log("ALLOW2: "+clicked);
+  if(clicked=="0a"){
+   if(corrtemp1==1) {corrchoice1=1;} else {corrchoice1=0;};
+   i_0a.setAttribute('src', 'bl_s.png');
+   i_0b.setAttribute('src', 'bl_u.png');
+   i_0c.setAttribute('src', 'bl_u.png');
+   resp1=1;
+  }
+  if(clicked=="0b"){
+   if(corrtemp1==2) {corrchoice1=1;} else {corrchoice1=0;};
+   i_0a.setAttribute('src', 'bl_u.png');
+   i_0b.setAttribute('src', 'bl_s.png');
+   i_0c.setAttribute('src', 'bl_u.png');
+   resp1=1;
+  }
+  if(clicked=="0c"){
+   if(corrtemp1==3) {corrchoice1=1;} else {corrchoice1=0;};
+   i_0a.setAttribute('src', 'bl_u.png');
+   i_0b.setAttribute('src', 'bl_u.png');
+   i_0c.setAttribute('src', 'bl_s.png');
+   resp1=1;
+  }
+  if(clicked=="0d"){
+   if(corrtemp2==1) {corrchoice2=1;} else {corrchoice2=0;};
+   i_0d.setAttribute('src', 'bl_s.png');
+   i_0e.setAttribute('src', 'bl_u.png');
+   i_0f.setAttribute('src', 'bl_u.png');
+   resp2=1;
+  }
+  if(clicked=="0e"){
+   if(corrtemp2==2) {corrchoice2=1;} else {corrchoice2=0;};
+   i_0d.setAttribute('src', 'bl_u.png');
+   i_0e.setAttribute('src', 'bl_s.png');
+   i_0f.setAttribute('src', 'bl_u.png');
+   resp2=1;
+  }
+  if(clicked=="0f"){
+   if(corrtemp2==3) {corrchoice2=1;} else {corrchoice2=0;};
+   i_0d.setAttribute('src', 'bl_u.png');
+   i_0e.setAttribute('src', 'bl_u.png');
+   i_0f.setAttribute('src', 'bl_s.png');
+   resp2=1;
+  }
+  if(clicked=="0g"){
+   if(corrtemp3==1) {corrchoice3=1;} else {corrchoice3=0;};
+   i_0g.setAttribute('src', 'bl_s.png');
+   i_0h.setAttribute('src', 'bl_u.png');
+   i_0i.setAttribute('src', 'bl_u.png');
+   resp3=1;
+  }
+  if(clicked=="0h"){
+   if(corrtemp3==2) {corrchoice3=1;} else {corrchoice3=0;};
+   i_0g.setAttribute('src', 'bl_u.png');
+   i_0h.setAttribute('src', 'bl_s.png');
+   i_0i.setAttribute('src', 'bl_u.png');
+   resp3=1;
+  }
+  if(clicked=="0i"){
+   if(corrtemp3==3) {corrchoice3=1;} else {corrchoice3=0;};
+   i_0g.setAttribute('src', 'bl_u.png');
+   i_0h.setAttribute('src', 'bl_u.png');
+   i_0i.setAttribute('src', 'bl_s.png');
+   resp3=1;
+  }
+
+
+  if((resp1==1 && obj.trials[trialno].subtrials==1) || (resp1==1 && resp2==1 && obj.trials[trialno].subtrials==2) || (resp1==1 && resp2==1 && resp3==1 && obj.trials[trialno].subtrials==3))
+  {
+
+ subtrialtotal=obj.trials[trialno].subtrials;
+ console.log("Correct:"+corrchoice1);
+ if(subtrialtotal==1 && corrchoice1==1) {corrtot++; console.log("1 correct");}
+ else if(subtrialtotal==2 && corrchoice1==1 && corrchoice2==1) {corrtot++; console.log("2 correct");}
+ else if(subtrialtotal==3 && corrchoice1==1 && corrchoice2==1 && corrchoice2==1) {corrtot++; console.log("3 correct");}
+ corrchoice1=0;
+ corrchoice2=0;
+ corrchoice3=0;
+ allow=0;
+ resp1=0;
+ resp2=0;
+ resp3=0;
+ is=setInterval(interstitial,1000);
+  }
+
+}
+}
+
+function nextpart(){
+clearInterval(np);
+newTrial();
+
+}
+function interstitial(){
+clearInterval(is);
+  i_0a.style.visibility = 'hidden';
+  i_0b.style.visibility = 'hidden';
+  i_0c.style.visibility = 'hidden';
+  i_0d.style.visibility = 'hidden';
+  i_0e.style.visibility = 'hidden';
+  i_0f.style.visibility = 'hidden';
+  i_0g.style.visibility = 'hidden';
+  i_0h.style.visibility = 'hidden';
+  i_0i.style.visibility = 'hidden';
+  i_0a.setAttribute('src', 'bl_u.png');
+  i_0b.setAttribute('src', 'bl_u.png');
+  i_0c.setAttribute('src', 'bl_u.png');
+  i_0d.setAttribute('src', 'bl_u.png');
+  i_0e.setAttribute('src', 'bl_u.png');
+  i_0f.setAttribute('src', 'bl_u.png');
+  i_0g.setAttribute('src', 'bl_u.png');
+  i_0h.setAttribute('src', 'bl_u.png');
+  i_0i.setAttribute('src', 'bl_u.png');
+cleanup_trial();
+nt=setInterval(nextTrial,250);
+}
+
+
+function getresp1() {
+  console.log("Hiding");
+  clearInterval(gr);
+  i_1a.style.visibility = 'hidden';
+  i_1b.style.visibility = 'hidden';
+  i_1c.style.visibility = 'hidden';
+  if(subtrialssofar+1<obj.trials[trialno].subtrials) {
+   console.log("Second part of a trial");
+      np=setInterval(nextpart, 1000);
+      cleanup_subtrial();
+    }
+  else {
+    console.log("About to allow responses")
+  gr2=setInterval(getresp2, 1000);
+  }
+}
+
+function getresp2() {
+  clearInterval(gr2);
+  if(obj.trials[trialno].subtrials==1) {
+  console.log("Respond to one subtrial");
+  i_0a.style.top = 0.22*wd +voffset+ "px"; 
+  i_0b.style.top = 0.22*wd +voffset+ "px"; 
+  i_0c.style.top = 0.22*wd +voffset+ "px";  
+  i_0a.style.visibility = 'visible';
+  i_0b.style.visibility = 'visible';
+  i_0c.style.visibility = 'visible';
+}  else if(obj.trials[trialno].subtrials==2) {
+   console.log("Respond to two subtrials");
+  i_0a.style.top = 0.1*wd +voffset+ "px"; 
+  i_0b.style.top = 0.1*wd +voffset+ "px"; 
+  i_0c.style.top = 0.1*wd +voffset+ "px";  
+  i_0d.style.top = 0.31*wd +voffset+ "px"; 
+  i_0e.style.top = 0.31*wd +voffset+ "px"; 
+  i_0f.style.top = 0.31*wd +voffset+ "px";  
+  i_0a.style.visibility = 'visible';
+  i_0b.style.visibility = 'visible';
+  i_0c.style.visibility = 'visible';
+  i_0d.style.visibility = 'visible';
+  i_0e.style.visibility = 'visible';
+  i_0f.style.visibility = 'visible';
+} else if(obj.trials[trialno].subtrials==3) {
+   console.log("Respond to two subtrials");
+  i_0a.style.top = 0.05*wd +voffset+ "px"; 
+  i_0b.style.top = 0.05*wd +voffset+ "px"; 
+  i_0c.style.top = 0.05*wd +voffset+ "px";  
+  i_0d.style.top = 0.22*wd +voffset+ "px"; 
+  i_0e.style.top = 0.22*wd +voffset+ "px"; 
+  i_0f.style.top = 0.22*wd +voffset+ "px";  
+  i_0g.style.top = 0.39*wd +voffset+ "px"; 
+  i_0h.style.top = 0.39*wd +voffset+ "px"; 
+  i_0i.style.top = 0.39*wd +voffset+ "px";  
+  i_0a.style.visibility = 'visible';
+  i_0b.style.visibility = 'visible';
+  i_0c.style.visibility = 'visible';
+  i_0d.style.visibility = 'visible';
+  i_0e.style.visibility = 'visible';
+  i_0f.style.visibility = 'visible';
+  i_0g.style.visibility = 'visible';
+  i_0h.style.visibility = 'visible';
+  i_0i.style.visibility = 'visible';
+}
+
+
+
+  allow=2;
+}
+
+function cleanup_trial() {
+  if (trialno+1<totaltrials) {
+    console.log("Cleaning up trial");
+  i_1a.setAttribute('src', obj.trials[trialno+1].tasks[0].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno+1].tasks[0].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno+1].tasks[0].r+'_u.png');
+}
+}
+
+function cleanup_subtrial() {
+  if (trialno<totaltrials) {
+    console.log("Cleaning up subtrial");
+  i_1a.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].l+'_u.png');
+  i_1b.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].m+'_u.png');
+  i_1c.setAttribute('src', obj.trials[trialno].tasks[subtrialssofar+1].r+'_u.png');
+}
+}
+
+ </script>
+
+
+</body>
+</html>
